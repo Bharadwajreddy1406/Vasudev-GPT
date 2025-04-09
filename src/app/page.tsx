@@ -9,7 +9,7 @@ import Navbar from '@/components/krishna-ui/Navbar';
 
 export default function Home() {
   return (
-    <div className="h-screen w-full overflow-hidden bg-slate-950 flex flex-col">
+    <div className="h-screen w-full overflow-hidden maroon-bg flex flex-col">
       {/* 3D particles background */}
       <ParticleBackground intensity={1} />
       
