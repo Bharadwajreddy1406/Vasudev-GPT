@@ -4,6 +4,14 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
+  --font-lora: 'Lora Variable', serif;
+  --font-cinzel: 'Cinzel Variable', serif;
+  --color-maroon: #800020;
+  --color-gold: #FFD700;
+  --color-amber: #FFBF00;
+  --color-cream: #FFFDD0;
+  --color-divine-gradient: linear-gradient(to right, var(--color-maroon), var(--color-gold));
+
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
@@ -44,6 +52,33 @@
   --animate-accordion-down: accordion-down 0.2s ease-out;
   --animate-accordion-up: accordion-up 0.2s ease-out;
 
+  @keyframes pulsate {
+    0% {
+      opacity: 0.6;
+      transform: scale(0.98);
+    }
+    50% {
+      opacity: 0.8;
+      transform: scale(1.01);
+    }
+    100% {
+      opacity: 0.6;
+      transform: scale(0.98);
+    }
+  }
+
+  @keyframes float {
+    0% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+    100% {
+      transform: translateY(0px);
+    }
+  }
+
   @keyframes accordion-down {
     from {
       height: 0;
@@ -65,14 +100,14 @@
 
 :root {
   --radius: 0.625rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.129 0.042 264.695);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.129 0.042 264.695);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.129 0.042 264.695);
-  --primary: oklch(0.208 0.042 265.755);
-  --primary-foreground: oklch(0.984 0.003 247.858);
+  --background: var(--color-maroon);
+  --foreground: var(--color-cream);
+  --card: var(--color-maroon);
+  --card-foreground: var(--color-gold);
+  --popover: var(--color-maroon);
+  --popover-foreground: var(--color-gold);
+  --primary: var(--color-gold);
+  --primary-foreground: var(--color-maroon);
   --secondary: oklch(0.968 0.007 247.896);
   --secondary-foreground: oklch(0.208 0.042 265.755);
   --muted: oklch(0.968 0.007 247.896);
@@ -133,10 +168,45 @@
 }
 
 @layer base {
+  .font-lora {
+    font-family: var(--font-lora);
+  }
+  
+  .font-cinzel {
+    font-family: var(--font-cinzel);
+  }
+
   * {
     @apply border-border outline-ring/50;
   }
+  
   body {
     @apply bg-background text-foreground;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-cinzel;
+  }
+  
+  p, span, div, input, textarea {
+    @apply font-lora;
+  }
+
+  .divine-glow {
+    box-shadow: 0 0 20px 5px var(--color-amber);
+    animation: pulsate 3s infinite ease-in-out;
+  }
+  
+  .divine-float {
+    animation: float 6s infinite ease-in-out;
+  }
+
+  .divine-text {
+    color: var(--color-gold);
+    text-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
+  }
+
+  .maroon-bg {
+    background-color: var(--color-maroon);
   }
 }
