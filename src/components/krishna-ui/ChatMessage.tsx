@@ -9,9 +9,10 @@ interface ChatMessageProps {
   type: MessageType;
   content: string;
   className?: string;
+  isLatest?: boolean;
 }
 
-export default function ChatMessage({ type, content, className }: ChatMessageProps) {
+export default function ChatMessage({ type, content, className, isLatest = false }: ChatMessageProps) {
   return (
     <motion.div
       className={`mb-4 max-w-[80%] ${type === 'user' ? 'ml-auto' : 'mr-auto'} ${className}`}
@@ -22,18 +23,18 @@ export default function ChatMessage({ type, content, className }: ChatMessagePro
       <div className={`
         p-4 rounded-xl
         ${type === 'ai' 
-          ? 'bg-maroon border border-amber-600 shadow-lg shadow-amber-900/20' 
-          : 'bg-cream/10 border border-cream/30'
+          ? 'bg-blue-900/70 border border-blue-400/30 shadow-lg shadow-blue-900/20' 
+          : 'bg-slate-500/10 border border-blue-300/30'
         }
       `}>
         {/* Message content */}
         {type === 'ai' ? (
           <div className="relative">
             {/* Divine emanation effect for AI message */}
-            <div className="absolute inset-0 rounded-lg bg-amber-500/5 blur-md -m-2" />
+            <div className="absolute inset-0 rounded-lg bg-blue-100/5 blur-md -m-2" />
             
             {/* Main text */}
-            <p className="relative font-cinzel text-base divine-text" style={{
+            <p className="relative font-cinzel text-base font-semibold" style={{
               background: 'linear-gradient(to bottom, #f6e05e, #b7791f)',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent'
@@ -43,15 +44,15 @@ export default function ChatMessage({ type, content, className }: ChatMessagePro
             
             {/* Divine separator */}
             {content.length > 50 && (
-              <div className="mt-3 mb-2 flex items-center justify-center opacity-60">
-                <div className="h-[1px] flex-1 bg-gradient-to-r from-transparent via-amber-400/30 to-transparent" />
-                <div className="w-1 h-1 mx-2 rounded-full bg-amber-400/50" />
-                <div className="h-[1px] flex-1 bg-gradient-to-r from-amber-400/30 via-amber-400/30 to-transparent" />
+              <div className="mt-3 mb-2 flex items-center justify-center opacity-90">
+                <div className="h-[1px] flex-1 bg-gradient-to-r from-transparent to-blue-500/30" />
+                <div className="w-1 h-1 mx-2 rounded-full bg-blue-400/50" />
+                <div className="h-[1px] flex-1 bg-gradient-to-r from-blue-400/30 via-blue-500/30 to-transparent" />
               </div>
             )}
           </div>
         ) : (
-          <p className="font-lora text-base text-cream relative">
+          <p className="font-lora text-base text-blue-50 relative">
             {content}
           </p>
         )}

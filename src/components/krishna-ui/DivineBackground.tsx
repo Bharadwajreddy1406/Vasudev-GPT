@@ -16,7 +16,7 @@ export default function DivineBackground({ className, isChat = false }: DivineBa
       <motion.div
         className="absolute inset-0 w-full h-full"
         initial={{ opacity: 0 }}
-        animate={{ opacity: isChat ? 0.15 : 0.12 }} // Slightly higher opacity for chat
+        animate={{ opacity: isChat ? 0.55 : 1.52 }} // Slightly higher opacity for chat
         transition={{ duration: 1.5 }}
       >
         <div className="absolute inset-0 bg-gradient-to-b from-slate-900/80 to-slate-900/95 z-10" />

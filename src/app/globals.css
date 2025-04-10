@@ -6,10 +6,10 @@
 @theme inline {
   --font-lora: 'Lora Variable', serif;
   --font-cinzel: 'Cinzel Variable', serif;
-  --color-maroon: #800020;
+  --color-maroon: #172554;
   --color-gold: #FFD700;
   --color-amber: #FFBF00;
-  --color-cream: #FFFDD0;
+  --color-cream: #172554;
   --color-divine-gradient: linear-gradient(to right, var(--color-maroon), var(--color-gold));
 
   --color-background: var(--background);

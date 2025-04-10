@@ -29,9 +29,13 @@ export default function Navbar() {
         
         Right Menu */}
         <div>
-          <Link href="/" className="font-cinzel text-cream hover:text-gold transition-colors">
-            About
-          </Link>
+            <Link 
+              href="/" 
+              className="font-cinzel text-amber hover:text-gold transition-colors"
+              style={{ textShadow: "0 0 5px rgba(255,191,0,0.8)" }}
+            >
+              About
+            </Link>
         </div>
       </div>
     </motion.nav>

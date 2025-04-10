@@ -2,7 +2,8 @@
 
 import { motion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
-import { MessageCircleIcon } from 'lucide-react';
+import { MessageCircleIcon, Loader2Icon } from 'lucide-react';
+import { useState } from 'react';
 
 import ParticleBackground from '@/components/krishna-ui/ParticleBackground';
 import KrishnaAnimation from '@/components/krishna-ui/KrishnaAnimation';
@@ -11,13 +12,17 @@ import Navbar from '@/components/krishna-ui/Navbar';
 
 export default function Home() {
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
 
   const navigateToChat = () => {
-    router.push('/chat');
+    setIsLoading(true);
+    setTimeout(() => {
+      router.push('/chat');
+    }, 500);
   };
 
   return (
-    <div className="h-screen w-full overflow-hidden maroon-bg flex flex-col">
+    <div className="h-screen w-full overflow-hidden bg-gradient-to-b from-blue-950 to-blue-900 flex flex-col">
       {/* 3D particles background */}
       <ParticleBackground intensity={1} />
       
@@ -64,18 +69,19 @@ export default function Home() {
         <div className="group relative">
           {/* Tooltip */}
           <div className="absolute bottom-full mb-2 right-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-            <div className="bg-amber-900/80 text-amber-100 px-3 py-1 rounded text-sm font-cinzel whitespace-nowrap backdrop-blur-sm">
-              Begin Divine Conversation
+            <div className="bg-slate-900/80 text-blue-100 px-3 py-1 rounded text-sm font-cinzel whitespace-nowrap backdrop-blur-sm">
+              Begin Conversation with Krishna
             </div>
           </div>
           
           {/* Button with divine styling */}
           <motion.button
             onClick={navigateToChat}
-            className="relative flex items-center justify-center w-14 h-14 rounded-full bg-gradient-to-r from-amber-700 to-amber-900 text-amber-100 shadow-lg border border-amber-500/30"
+            disabled={isLoading}
+            className="relative flex items-center justify-center w-14 h-14 rounded-full bg-gradient-to-r from-blue-700 to-blue-900 text-blue-100 shadow-lg border border-blue-500/30"
             whileHover={{ 
               scale: 1.1,
-              boxShadow: "0 0 15px rgba(245, 158, 11, 0.5)"
+              boxShadow: "0 0 15px rgba(59, 130, 246, 0.5)"
             }}
             whileTap={{ scale: 0.95 }}
             initial={{ opacity: 0, y: 20 }}
@@ -83,11 +89,15 @@ export default function Home() {
             transition={{ duration: 0.5, delay: 2 }}
           >
             {/* Divine glow effect */}
-            <div className="absolute inset-0 rounded-full bg-amber-500/20 blur-md animate-pulse" style={{ animationDuration: '2s' }}></div>
-            <div className="absolute inset-0 rounded-full bg-amber-600/10 blur-sm"></div>
+            <div className="absolute inset-0 rounded-full bg-blue-500/20 blur-md animate-pulse" style={{ animationDuration: '2s' }}></div>
+            <div className="absolute inset-0 rounded-full bg-blue-600/10 blur-sm"></div>
             
             {/* Icon */}
-            <MessageCircleIcon className="w-6 h-6 relative z-10" />
+            {isLoading ? (
+              <Loader2Icon className="w-6 h-6 relative z-10 animate-spin" />
+            ) : (
+              <MessageCircleIcon className="w-6 h-6 relative z-10" />
+            )}
           </motion.button>
         </div>
       </div>
