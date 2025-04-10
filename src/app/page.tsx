@@ -41,7 +41,7 @@ export default function Home() {
           
           {/* Input section - positioned below the Krishna image with higher z-index */}
           <motion.div 
-            className="mt-1 w-full relative z-20"
+            className="mt-0 w-full relative z-20"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.7, delay: 2.5 }}
