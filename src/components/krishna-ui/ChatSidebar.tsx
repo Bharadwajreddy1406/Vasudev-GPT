@@ -2,13 +2,28 @@
 
 import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { PlusIcon, MessageSquareIcon, ChevronRightIcon, ChevronLeftIcon } from 'lucide-react';
+import { 
+  PlusIcon, 
+  ChevronRightIcon, 
+  ChevronLeftIcon,
+  MessageSquareIcon,
+  StarIcon,
+  BookOpenIcon, 
+  FeatherIcon,
+  SunIcon,
+  MoonIcon,
+  SparklesIcon,
+  HeartIcon,
+  FlameIcon,
+} from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
 interface Chat {
   id: string;
   title: string;
   lastMessage: string;
   timestamp: Date;
+  icon?: string; // Optional icon identifier
 }
 
 interface ChatSidebarProps {
@@ -18,9 +33,24 @@ interface ChatSidebarProps {
   onNewChat: () => void;
 }
 
+// Map of possible icons for chats
+const CHAT_ICONS = {
+  'lotus': MessageSquareIcon,
+  'star': StarIcon,
+  'book': BookOpenIcon,
+  'feather': FeatherIcon,
+  'sun': SunIcon,
+  'moon': MoonIcon,
+  'sparkles': SparklesIcon,
+  'heart': HeartIcon,
+  'flame': FlameIcon,
+  'tree': MessageSquareIcon
+};
+
 export default function ChatSidebar({ chats, activeChat, onChatSelect, onNewChat }: ChatSidebarProps) {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const router = useRouter();
 
   // Update isMobile state based on window width
   useEffect(() => {
@@ -37,6 +67,28 @@ export default function ChatSidebar({ chats, activeChat, onChatSelect, onNewChat
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
+
+  // Get appropriate icon component for a chat
+  const getChatIcon = (chat: Chat) => {
+    // If chat has a predefined icon, use it
+    if (chat.icon && CHAT_ICONS[chat.icon as keyof typeof CHAT_ICONS]) {
+      const IconComponent = CHAT_ICONS[chat.icon as keyof typeof CHAT_ICONS];
+      return <IconComponent className="h-4 w-4 flex-shrink-0" />;
+    }
+    
+    // Otherwise assign one based on chat ID (consistent mapping)
+    const iconKeys = Object.keys(CHAT_ICONS);
+    const iconKey = iconKeys[parseInt(chat.id) % iconKeys.length];
+    const IconComponent = CHAT_ICONS[iconKey as keyof typeof CHAT_ICONS];
+    
+    return <IconComponent className="h-4 w-4 flex-shrink-0" />;
+  };
+
+  // Handle chat selection with routing
+  const handleChatSelect = (chatId: string) => {
+    router.push(`/chat/${chatId}`);
+    onChatSelect(chatId);
+  };
 
   return (
     <>
@@ -75,7 +127,7 @@ export default function ChatSidebar({ chats, activeChat, onChatSelect, onNewChat
         </div>
         
         {/* Chat list */}
-        <div className="flex-1 overflow-y-auto py-2">
+        <div className="flex-1 overflow-y-auto py-2 scroll-smooth">
           <AnimatePresence>
             {chats.map((chat) => (
               <motion.div
@@ -85,7 +137,11 @@ export default function ChatSidebar({ chats, activeChat, onChatSelect, onNewChat
                 exit={{ opacity: 0, x: -20 }}
                 transition={{ duration: 0.2 }}
                 className={`relative cursor-pointer my-1 mx-1`}
-                onClick={() => onChatSelect(chat.id)}
+                onClick={() => handleChatSelect(chat.id)}
+                whileHover={{ 
+                  scale: 1.02,
+                  transition: { duration: 0.2 }
+                }}
               >
                 {/* Selection indicator */}
                 {activeChat === chat.id && (
@@ -105,11 +161,20 @@ export default function ChatSidebar({ chats, activeChat, onChatSelect, onNewChat
                 <div 
                   className={`flex items-center px-3 py-3 rounded-md ${
                     activeChat === chat.id 
-                      ? 'bg-amber-800/20 text-amber-200'
+                      ? 'bg-amber-800/20 text-amber-200 shadow-inner shadow-amber-500/10'
                       : 'text-amber-200/80 hover:bg-amber-600/10' 
                   }`}
                 >
-                  <MessageSquareIcon className="h-4 w-4 flex-shrink-0" />
+                  {/* Dynamic icon based on chat */}
+                  <div className={`
+                    flex-shrink-0
+                    ${activeChat === chat.id 
+                      ? 'text-amber-400 animate-pulse' 
+                      : 'text-amber-300/70'
+                    }
+                  `}>
+                    {getChatIcon(chat)}
+                  </div>
                   
                   {!isCollapsed && (
                     <div className="ml-3 overflow-hidden">
