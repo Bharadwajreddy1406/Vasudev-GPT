@@ -21,7 +21,7 @@ export default function DivineBackground({ className, isChat = false }: DivineBa
       >
         <div className="absolute inset-0 bg-gradient-to-b from-slate-900/80 to-slate-900/95 z-10" />
         <Image
-          src="/background1.jpeg"
+          src="/background2.jpeg"
           alt="Divine background"
           fill
           className="object-cover blur-[1px]" // Less blurred for chat

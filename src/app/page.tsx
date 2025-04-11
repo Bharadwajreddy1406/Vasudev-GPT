@@ -41,7 +41,7 @@ export default function Home() {
             <h1 className="text-3xl sm:text-4xl md:text-5xl font-cinzel divine-text mb-3 sm:mb-4">
               Divine Wisdom
             </h1>
-            <p className="text-md sm:text-lg md:text-xl font-lora text-cream">
+            <p className="text-md sm:text-lg md:text-xl font-lora divine-text text-cream">
               Share your thoughts with cosmic consciousness
             </p>
           </motion.div>

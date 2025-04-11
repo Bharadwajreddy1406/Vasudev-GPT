@@ -105,7 +105,7 @@ export default function ChatSidebar({ chats, activeChat, onChatSelect, onNewChat
       )}
       
       <motion.div
-        className={`bg-slate-900/60 backdrop-blur-md border-r border-amber-500/20 h-full flex flex-col z-20 overflow-hidden`}
+        className={`bg-slate-900/60 mt-1 backdrop-blur-md border-r border-amber-500/20 h-full flex flex-col z-20 overflow-hidden`}
         initial={{ width: isMobile ? 0 : 280 }}
         animate={{ 
           width: isCollapsed ? (isMobile ? 0 : 60) : 280,

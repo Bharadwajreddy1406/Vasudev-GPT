@@ -43,7 +43,7 @@ export default function ThoughtInput({ className }: ThoughtInputProps) {
           value={thought}
           onChange={(e) => setThought(e.target.value)}
           placeholder="Enter your thoughts today..."
-          className="flex-grow backdrop-blur-2xl px-4 py-3 rounded-full border-2 border-blue-300 bg-opacity-40 text-slate-100 font-lora focus:outline-none focus:ring-2 focus:ring-blue-400"
+          className="flex-grow backdrop-blur-2xl px-4 py-3 rounded-xl border-2 border-blue-300 bg-opacity-40 text-slate-100 font-lora focus:outline-none focus:ring-2 focus:ring-blue-400"
           autoFocus
           disabled={isLoading}
         />

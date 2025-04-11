@@ -91,7 +91,7 @@ export default function ChatInput({ onSend, className, isLoading = false }: Chat
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.5 }}
     >
-      <form ref={formRef} onSubmit={handleSubmit} className="flex items-end">
+      <form ref={formRef} onSubmit={handleSubmit} className="flex  gap-3  ">
         {/* Chat input area */}
         <div className="relative flex-grow">
           <textarea
@@ -103,14 +103,16 @@ export default function ChatInput({ onSend, className, isLoading = false }: Chat
             rows={1}
             disabled={isLoading}
             className={`
-              w-full px-4 py-3 rounded-l-full resize-none
-              bg-slate-800/50 backdrop-blur-sm
-              border-2 border-amber-600/40 hover:border-amber-500/60 focus:border-amber-500
-              text-cream font-lora
-              focus:outline-none focus:ring-2 focus:ring-amber-400/40
+              w-full px-4 py-3 rounded-md resize-none
+              bg-[#092A5E]/90 backdrop-blur-sm
+              border-2 border-[#3592BD] hover:border-[#63C6EB] focus:border-[#63C6EB]
+              text-[#F5F8FF] font-lora
+              focus:outline-none focus:ring-2 focus:ring-[#63C6EB]/50
               transition-colors duration-200
-              placeholder:text-amber-100/30
+              placeholder:text-[#E8F1FF]/60
+              divine-scrollbar
               ${isLoading ? 'opacity-70 cursor-not-allowed' : ''}
+              shadow-inner shadow-[#031C3E]
             `}
             maxLength={1000}
             style={{ 
@@ -120,7 +122,7 @@ export default function ChatInput({ onSend, className, isLoading = false }: Chat
           />
           
           {/* Character counter */}
-          <div className="absolute right-3 bottom-1 text-xs text-amber-200/40">
+          <div className="absolute right-3 bottom-1 text-xs text-[#E8F1FF]/70">
             {message.length > 0 && (
               <span>{message.length}/1000</span>
             )}
@@ -133,23 +135,25 @@ export default function ChatInput({ onSend, className, isLoading = false }: Chat
           type="submit"
           disabled={!message.trim() || isLoading}
           className={`
-            relative min-w-[56px] h-[56px] rounded-r-full 
-            bg-gradient-to-br from-amber-500 to-amber-700 
-            text-slate-900 
-            hover:from-amber-400 hover:to-amber-600 
+            relative min-w-[56px] h-[56px] rounded-md
+            bg-gradient-to-br from-[#63C6EB] to-[#285CA2] 
+            text-[#F5F8FF] 
+            hover:from-[#63C6EB] hover:to-[#3592BD] 
             transition-colors duration-200
             flex items-center justify-center
             disabled:opacity-50 disabled:cursor-not-allowed
-            focus:outline-none focus:ring-2 focus:ring-amber-400/70 focus:ring-offset-1
+            focus:outline-none focus:ring-2 focus:ring-[#63C6EB]/70 focus:ring-offset-1
+            border-2 border-[#3592BD]
+            shadow-md shadow-[#031C3E]/50
           `}
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
         >
           {/* Glow effect for animation */}
-          <div className="send-button-glow absolute inset-0 rounded-r-full bg-amber-300 opacity-0" />
+          <div className="send-button-glow absolute inset-0 rounded-full bg-[#63C6EB] opacity-0" />
           
           {isLoading ? (
-            <FeatherIcon className="h-5 w-5 animate-bounce" />
+            <FeatherIcon className="h-5 w-5 text-white animate-pulse" />
           ) : (
             <SendIcon className="h-5 w-5" />
           )}
@@ -157,7 +161,7 @@ export default function ChatInput({ onSend, className, isLoading = false }: Chat
       </form>
       
       {/* Helpful hint */}
-      <div className="mt-2 text-xs text-center text-amber-200/40">
+      <div className="mt-2 text-xs text-center text-[#E8F1FF]/40">
         Press Enter to send • Shift+Enter for new line
       </div>
     </motion.div>

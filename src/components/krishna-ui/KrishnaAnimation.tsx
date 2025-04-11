@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import { animate, createScope, createTimeline } from 'animejs';
 
@@ -14,6 +14,8 @@ export default function KrishnaAnimation({ className }: KrishnaAnimationProps) {
   const auraRef = useRef<HTMLDivElement>(null);
   const topAuraRef = useRef<HTMLDivElement>(null);
   const scopeRef = useRef<any>(null);
+  // Track aura color transition
+  const [auraColorTransition, setAuraColorTransition] = useState(false);
   
   useEffect(() => {
     if (!containerRef.current) return;
@@ -26,7 +28,7 @@ export default function KrishnaAnimation({ className }: KrishnaAnimationProps) {
       const timeline = createTimeline({
         autoplay: true,
         defaults: {
-          duration: 1500,
+          duration: 5500,
           ease: 'outQuad'
         }
       });
@@ -43,7 +45,7 @@ export default function KrishnaAnimation({ className }: KrishnaAnimationProps) {
       timeline.add('#krishna-aura', {
         scale: [0, 1],
         opacity: [0, 0.7],
-        duration: 1500,
+        duration: 5500,
         ease: 'outElastic(1, .5)'
       }, '-=500'); // Start 500ms before previous animation ends
 
@@ -59,37 +61,52 @@ export default function KrishnaAnimation({ className }: KrishnaAnimationProps) {
       scope.add('startFloating', () => {
         // Floating animation for Krishna
         animate('#krishna-image', {
-          translateY: [-0, 0],
-          duration: 3000,
+          translateY: [-5, 5],
+          duration: 7000,
           direction: 'alternate',
           loop: true,
           easing: 'inOutSine'
         });
         
-        // Pulsating glow for the main aura
+        // Enhanced pulsating glow for the main aura with more dramatic scaling
+        // Using more symmetric easing function for smooth shrinking
         animate('#krishna-aura', {
-          scale: [0.95, 1.05],
+          scale: [0.85, 1.15], // More dramatic scaling effect
           opacity: [0.5, 0.7],
-          duration: 3000,
-          direction: 'alternate',
-          loop: true,
-          easing: 'inOutSine'
-        });
-
-        // Pulsating glow for the top aura
-        animate('#krishna-top-aura', {
-          scale: [0.92, 1.28],
-          opacity: [0.7, 0.9],
           duration: 4000,
           direction: 'alternate',
           loop: true,
-          easing: 'inOutSine'
+          easing: 'cubicBezier(.45, 0, .55, 1)' // Smoother symmetric easing for growing and shrinking
+        });
+
+        // Pulsating glow for the top aura with more varied scale values
+        animate('#krishna-top-aura', {
+          scale: [0.82, 1.35], // More varied scale for dramatic effect
+          opacity: [0.65, 0.9],
+          duration: 4200, // Slightly longer duration for desynchronized effect with main aura
+          direction: 'alternate',
+          loop: true,
+          easing: 'cubicBezier(.45, 0, .55, 1)' // Same smooth easing for consistency
         });
       });
       
       // Start continuous animations after the initial sequence
       setTimeout(() => {
         scope.methods.startFloating();
+        
+        // Begin the color transition after animations start
+        setTimeout(() => {
+          // Trigger aura color transition
+          setAuraColorTransition(true);
+          
+          // Color transition animation for the main aura
+
+          animate('#krishna-aura-overlay', {
+            opacity: [0, 0.8], // Fade in the amber overlay
+            duration: 8000, // Slow transition
+            easing: 'easeInOutSine'
+          });
+        }, 3000); // Start color transition 3 seconds after main animations
       }, 2500);
     });
     
@@ -107,18 +124,28 @@ export default function KrishnaAnimation({ className }: KrishnaAnimationProps) {
       <div 
         id="krishna-aura"
         ref={auraRef} 
-        className="absolute rounded-full bg-amber-500/70 w-[400px] h-[400px] blur-xl z-0"
+        className="absolute rounded-full bg-[#E8F1FF]/70 w-[400px] h-[400px] blur-xl z-0"
         style={{ opacity: 0 }} // Initially hidden
-      />
+      >
+        {/* Amber overlay for color transition effect */}
+        <div 
+          id="krishna-aura-overlay" 
+          className="absolute inset-0 rounded-full bg-amber-400/90 blur-xl z-0"
+          style={{ 
+            opacity: 0, // Initially transparent
+            mixBlendMode: 'overlay'
+          }}
+        />
+      </div>
 
-      {/* Top-centered amber aura - placed behind the image but in front of the main aura */}
+      {/* Top-centered aura - placed behind the image but in front of the main aura */}
       <div 
         id="krishna-top-aura"
         ref={topAuraRef} 
-        className="absolute  shadow-amber-200 shadow-2xl rounded-full bg-amber-400/90 w-[350px] h-[350px] blur-md top-[30px] z-1"
+        className="absolute shadow-[#63C6EB] shadow-2xl rounded-full bg-amber-400/90 w-[350px] h-[350px] blur-md top-[30px] z-1"
         style={{ 
           opacity: 0, 
-          filter: 'drop-shadow(0 0 20px rgba(245, 158, 11, 0.8))',
+          filter: 'drop-shadow(0 0 20px rgba(99, 198, 235, 0.8))',
           backdropFilter: 'blur(4px)'
         }} 
       />

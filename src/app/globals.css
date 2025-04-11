@@ -6,11 +6,12 @@
 @theme inline {
   --font-lora: 'Lora Variable', serif;
   --font-cinzel: 'Cinzel Variable', serif;
-  --color-maroon: #172554;
-  --color-gold: #FFD700;
-  --color-amber: #FFBF00;
-  --color-cream: #172554;
-  --color-divine-gradient: linear-gradient(to right, var(--color-maroon), var(--color-gold));
+  --color-maroon: #031C3E;
+  --color-gold: #E8F1FF;
+  --color-divine: #FFD700;
+  --color-amber: #63C6EB;
+  --color-cream: #F5F8FF;
+  --color-divine-gradient: linear-gradient(to right, var(--color-maroon), var(--color-amber));
 
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -108,63 +109,63 @@
   --popover-foreground: var(--color-gold);
   --primary: var(--color-gold);
   --primary-foreground: var(--color-maroon);
-  --secondary: oklch(0.968 0.007 247.896);
-  --secondary-foreground: oklch(0.208 0.042 265.755);
-  --muted: oklch(0.968 0.007 247.896);
-  --muted-foreground: oklch(0.554 0.046 257.417);
-  --accent: oklch(0.968 0.007 247.896);
-  --accent-foreground: oklch(0.208 0.042 265.755);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.929 0.013 255.508);
-  --input: oklch(0.929 0.013 255.508);
-  --ring: oklch(0.704 0.04 256.788);
-  --chart-1: oklch(0.646 0.222 41.116);
-  --chart-2: oklch(0.6 0.118 184.704);
-  --chart-3: oklch(0.398 0.07 227.392);
-  --chart-4: oklch(0.828 0.189 84.429);
-  --chart-5: oklch(0.769 0.188 70.08);
-  --sidebar: oklch(0.984 0.003 247.858);
-  --sidebar-foreground: oklch(0.129 0.042 264.695);
-  --sidebar-primary: oklch(0.208 0.042 265.755);
-  --sidebar-primary-foreground: oklch(0.984 0.003 247.858);
-  --sidebar-accent: oklch(0.968 0.007 247.896);
-  --sidebar-accent-foreground: oklch(0.208 0.042 265.755);
-  --sidebar-border: oklch(0.929 0.013 255.508);
-  --sidebar-ring: oklch(0.704 0.04 256.788);
+  --secondary: #092A5E;
+  --secondary-foreground: #F5F8FF;
+  --muted: #0A2342;
+  --muted-foreground: #E8F1FF;
+  --accent: #3592BD;
+  --accent-foreground: #F5F8FF;
+  --destructive: #63C6EB;
+  --border: #0E193B;
+  --input: #0E193B;
+  --ring: #285CA2;
+  --chart-1: #3592BD;
+  --chart-2: #285CA2;
+  --chart-3: #092A5E;
+  --chart-4: #63C6EB;
+  --chart-5: #E8F1FF;
+  --sidebar: #031C3E;
+  --sidebar-foreground: #F5F8FF;
+  --sidebar-primary: #285CA2;
+  --sidebar-primary-foreground: #E8F1FF;
+  --sidebar-accent: #3592BD;
+  --sidebar-accent-foreground: #F5F8FF;
+  --sidebar-border: #0E193B;
+  --sidebar-ring: #285CA2;
 }
 
 .dark {
-  --background: oklch(0.129 0.042 264.695);
-  --foreground: oklch(0.984 0.003 247.858);
-  --card: oklch(0.208 0.042 265.755);
-  --card-foreground: oklch(0.984 0.003 247.858);
-  --popover: oklch(0.208 0.042 265.755);
-  --popover-foreground: oklch(0.984 0.003 247.858);
-  --primary: oklch(0.929 0.013 255.508);
-  --primary-foreground: oklch(0.208 0.042 265.755);
-  --secondary: oklch(0.279 0.041 260.031);
-  --secondary-foreground: oklch(0.984 0.003 247.858);
-  --muted: oklch(0.279 0.041 260.031);
-  --muted-foreground: oklch(0.704 0.04 256.788);
-  --accent: oklch(0.279 0.041 260.031);
-  --accent-foreground: oklch(0.984 0.003 247.858);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.551 0.027 264.364);
-  --chart-1: oklch(0.488 0.243 264.376);
-  --chart-2: oklch(0.696 0.17 162.48);
-  --chart-3: oklch(0.769 0.188 70.08);
-  --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: oklch(0.208 0.042 265.755);
-  --sidebar-foreground: oklch(0.984 0.003 247.858);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.984 0.003 247.858);
-  --sidebar-accent: oklch(0.279 0.041 260.031);
-  --sidebar-accent-foreground: oklch(0.984 0.003 247.858);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.551 0.027 264.364);
+  --background: #031C3E;
+  --foreground: #F5F8FF;
+  --card: #092A5E;
+  --card-foreground: #F5F8FF;
+  --popover: #092A5E;
+  --popover-foreground: #F5F8FF;
+  --primary: #E8F1FF;
+  --primary-foreground: #031C3E;
+  --secondary: #0A2342;
+  --secondary-foreground: #F5F8FF;
+  --muted: #0A2342;
+  --muted-foreground: #E8F1FF;
+  --accent: #3592BD;
+  --accent-foreground: #F5F8FF;
+  --destructive: #63C6EB;
+  --border: #0E193B;
+  --input: #0E193B;
+  --ring: #285CA2;
+  --chart-1: #3592BD;
+  --chart-2: #285CA2;
+  --chart-3: #092A5E;
+  --chart-4: #63C6EB;
+  --chart-5: #E8F1FF;
+  --sidebar: #031C3E;
+  --sidebar-foreground: #F5F8FF;
+  --sidebar-primary: #285CA2;
+  --sidebar-primary-foreground: #E8F1FF;
+  --sidebar-accent: #3592BD;
+  --sidebar-accent-foreground: #F5F8FF;
+  --sidebar-border: #0E193B;
+  --sidebar-ring: #285CA2;
 }
 
 @layer base {
@@ -203,10 +204,86 @@
 
   .divine-text {
     color: var(--color-gold);
-    text-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
+    text-shadow: 0 0 5px rgba(232, 241, 255, 0.7);
+  }
+
+  .divine-amber {
+    color: var(--color-divine);
+    text-shadow: 0 0 5px rgba(232, 241, 255, 0.7);
   }
 
   .maroon-bg {
     background-color: var(--color-maroon);
+  }
+  
+  .celestial-bg {
+    background: linear-gradient(to bottom, #031C3E, #092A5E);
+  }
+  
+  .moonlight-glow {
+    box-shadow: 0 0 15px 3px #E8F1FF;
+  }
+  
+  .divine-interactive {
+    transition: all 0.3s ease;
+  }
+  
+  .divine-interactive:hover {
+    background-color: #63C6EB;
+    box-shadow: 0 0 10px 2px #3592BD;
+  }
+
+  /* Custom scrollbar styling */
+  /* For Webkit browsers (Chrome, Safari, etc.) */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    background-color: #031C3E;
+    border-radius: 10px;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background: linear-gradient(to bottom, #3592BD, #285CA2);
+    border-radius: 10px;
+    border: 2px solid #031C3E;
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(to bottom, #63C6EB, #3592BD);
+  }
+  
+  /* For Firefox */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: #3592BD #031C3E;
+  }
+  
+  /* Hide scrollbar in TextArea but keep functionality */
+  .divine-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: #3592BD #031C3E;
+  }
+  
+  .divine-scrollbar::-webkit-scrollbar {
+    width: 6px;
+  }
+  
+  .divine-scrollbar::-webkit-scrollbar-track {
+    background-color: #031C3E;
+    border-radius: 10px;
+  }
+  
+  .divine-scrollbar::-webkit-scrollbar-thumb {
+    background: linear-gradient(to bottom, #3592BD, #285CA2);
+    border-radius: 10px;
+    box-shadow: 0 0 5px rgba(99, 198, 235, 0.3);
+  }
+  
+  .divine-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(to bottom, #63C6EB, #3592BD);
+    box-shadow: 0 0 8px rgba(99, 198, 235, 0.5);
   }
 }

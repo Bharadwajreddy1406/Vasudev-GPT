@@ -2,11 +2,17 @@
 
 import Link from 'next/link';
 import { motion } from 'framer-motion';
+import { usePathname } from 'next/navigation';
 
 export default function Navbar() {
+  const pathname = usePathname();
+  const isOnChatPage = pathname?.includes('/chat');
+
   return (
     <motion.nav 
-      className="fixed top-0 left-0 right-0 z-50 px-4 py-4 bg-transparent"
+      className={`fixed  top-0 left-0 right-0 z-50 px-4 py-4 bg-transparent ${
+        isOnChatPage ? 'border-b border-amber-500/20 shadow-xs shadow-amber-500/10' : ''
+      }`}
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.8, ease: "easeOut" }}
@@ -31,8 +37,7 @@ export default function Navbar() {
         <div>
             <Link 
               href="/" 
-              className="font-cinzel text-amber hover:text-gold transition-colors"
-              style={{ textShadow: "0 0 5px rgba(255,191,0,0.8)" }}
+              className="font-cinzel hover:text-gold transition-colors divine-text"
             >
               About
             </Link>
