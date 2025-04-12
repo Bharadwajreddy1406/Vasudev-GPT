@@ -7,9 +7,13 @@ export async function POST() {
     // This route just provides a custom API endpoint if needed
     
     // Clear any session cookies manually just to be safe
-    cookies().delete('next-auth.session-token');
-    cookies().delete('next-auth.csrf-token');
-    cookies().delete('next-auth.callback-url');
+    (await
+      // NextAuth handles session deletion through its API
+      // This route just provides a custom API endpoint if needed
+      // Clear any session cookies manually just to be safe
+      cookies()).delete('next-auth.session-token');
+    (await cookies()).delete('next-auth.csrf-token');
+    (await cookies()).delete('next-auth.callback-url');
     
     return NextResponse.json({
       success: true,
