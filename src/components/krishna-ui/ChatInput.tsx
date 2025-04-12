@@ -2,8 +2,10 @@
 
 import { useState, useRef, useEffect } from 'react';
 import { SendIcon, FeatherIcon } from 'lucide-react';
-import { motion } from 'framer-motion';
-import { animate, createScope } from 'animejs';
+import { motion, useAnimate } from 'framer-motion';
+import { useAuth } from '@/context/AuthContext';
+import { useRouter } from 'next/navigation';
+import toast from 'react-hot-toast';
 
 interface ChatInputProps {
   onSend: (message: string) => void;
@@ -12,11 +14,14 @@ interface ChatInputProps {
 }
 
 export default function ChatInput({ onSend, className, isLoading = false }: ChatInputProps) {
+  const { user } = useAuth();
+  const router = useRouter();
   const [message, setMessage] = useState('');
   const formRef = useRef<HTMLFormElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
-  const scopeRef = useRef<any>(null);
-  
+  const [buttonRef, animateButton] = useAnimate();
+  const [glowRef, animateGlow] = useAnimate();
+
   // Auto resize textarea based on content
   useEffect(() => {
     if (inputRef.current) {
@@ -24,56 +29,41 @@ export default function ChatInput({ onSend, className, isLoading = false }: Chat
       inputRef.current.style.height = `${inputRef.current.scrollHeight}px`;
     }
   }, [message]);
-  
-  // Create animation scope when component mounts
-  useEffect(() => {
-    if (!formRef.current) return;
-    
-    scopeRef.current = createScope({
-      root: formRef.current,
-      defaults: {
-        duration: 300,
-        ease: 'inOutSine'
-      }
-    }).add(scope => {
-      // Register animation function to be called on submit
-      scope.add('animateButton', () => {
-        animate('#chat-submit-button', {
-          scale: [1, 1.2, 1],
-          duration: 300
-        });
-        
-        // Add particles or glow effect
-        animate('.send-button-glow', {
-          opacity: [0, 0.8, 0],
-          scale: [1, 1.5],
-          duration: 400,
-        });
-      });
-    });
-    
-    // Cleanup animations when component unmounts
-    return () => {
-      if (scopeRef.current) {
-        scopeRef.current.revert();
-      }
-    };
-  }, []);
-  
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (!user) {
+      // If user is not authenticated, redirect to login
+      toast.error('Please login to continue the conversation');
+      router.push('/login');
+      return;
+    }
+
     if (message.trim() && !isLoading) {
-      // Animate button using the registered animation method
-      if (scopeRef.current && scopeRef.current.methods) {
-        scopeRef.current.methods.animateButton();
-      }
-      
+      // Animate button with Framer Motion
+      animateButton(buttonRef.current, { 
+        scale: [1, 1.2, 1] 
+      }, { 
+        duration: 0.3,
+        ease: "easeInOut" 
+      });
+
+      // Animate glow effect with Framer Motion
+      animateGlow(glowRef.current, { 
+        opacity: [0, 0.8, 0],
+        scale: [1, 1.5]
+      }, { 
+        duration: 0.4,
+        ease: "easeInOut" 
+      });
+
       // Send message and clear input
       onSend(message);
       setMessage('');
     }
   };
-  
+
   // Handle Shift+Enter for new lines vs Enter for submit
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === 'Enter' && !e.shiftKey) {
@@ -83,7 +73,7 @@ export default function ChatInput({ onSend, className, isLoading = false }: Chat
       }
     }
   };
-  
+
   return (
     <motion.div 
       className={`w-full ${className}`}
@@ -99,7 +89,7 @@ export default function ChatInput({ onSend, className, isLoading = false }: Chat
             value={message}
             onChange={(e) => setMessage(e.target.value)}
             onKeyDown={handleKeyDown}
-            placeholder="Continue your divine conversation..."
+            placeholder={user ? "Continue your divine conversation..." : "Login to start your divine conversation..."}
             rows={1}
             disabled={isLoading}
             className={`
@@ -131,7 +121,7 @@ export default function ChatInput({ onSend, className, isLoading = false }: Chat
         
         {/* Send button with divine styling */}
         <motion.button
-          id="chat-submit-button"
+          ref={buttonRef}
           type="submit"
           disabled={!message.trim() || isLoading}
           className={`
@@ -150,7 +140,10 @@ export default function ChatInput({ onSend, className, isLoading = false }: Chat
           whileTap={{ scale: 0.95 }}
         >
           {/* Glow effect for animation */}
-          <div className="send-button-glow absolute inset-0 rounded-full bg-[#63C6EB] opacity-0" />
+          <motion.div 
+            ref={glowRef}
+            className="absolute inset-0 rounded-full bg-[#63C6EB] opacity-0"
+          />
           
           {isLoading ? (
             <FeatherIcon className="h-5 w-5 text-white animate-pulse" />
@@ -162,7 +155,7 @@ export default function ChatInput({ onSend, className, isLoading = false }: Chat
       
       {/* Helpful hint */}
       <div className="mt-2 text-xs text-center text-[#E8F1FF]/40">
-        Press Enter to send • Shift+Enter for new line
+        {user ? 'Press Enter to send • Shift+Enter for new line' : 'Please login to interact with Krishna GPT'}
       </div>
     </motion.div>
   );

@@ -4,6 +4,8 @@ import "./globals.css";
 import "@fontsource-variable/lora";
 import "@fontsource-variable/cinzel";
 import PageTransition from "@/components/krishna-ui/PageTransition";
+import { AuthProvider } from "@/context/AuthContext";
+import { Toaster } from "react-hot-toast";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -30,9 +32,12 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} font-lora antialiased`}
       >
-        <PageTransition>
-          {children}
-        </PageTransition>
+        <AuthProvider>
+          <PageTransition>
+            {children}
+          </PageTransition>
+          <Toaster position="top-center" />
+        </AuthProvider>
       </body>
     </html>
   );
