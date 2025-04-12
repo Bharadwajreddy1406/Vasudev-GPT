@@ -1,8 +1,9 @@
 'use client';
 
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext } from 'react';
 import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
+import { signIn, signOut, useSession } from 'next-auth/react';
 
 type User = {
   id: string;
@@ -30,63 +31,43 @@ export const useAuth = () => {
 };
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(true);
+  const { data: session, status } = useSession();
+  const loading = status === 'loading';
   const router = useRouter();
+  
+  // Extract user from NextAuth session
+  const user = session?.user ? {
+    id: session.user.id,
+    email: session.user.email || '',
+    username: session.user.username || '',
+    avatar: session.user.avatar || '',
+  } : null;
 
-  // Check if user is logged in on initial load
-  useEffect(() => {
-    const checkUserLoggedIn = async () => {
-      try {
-        const res = await fetch('/api/auth/check');
-        const data = await res.json();
-        
-        if (data.success && data.user) {
-          setUser(data.user);
-        }
-      } catch (error) {
-        console.error('Authentication check failed:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    checkUserLoggedIn();
-  }, []);
-
-  // Login function
+  // Login function using NextAuth
   const login = async (email: string, password: string) => {
     try {
-      setLoading(true);
-      const res = await fetch('/api/auth/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, password }),
+      const result = await signIn('credentials', {
+        email,
+        password,
+        redirect: false,
       });
 
-      const data = await res.json();
-
-      if (data.success) {
-        setUser(data.user);
+      if (result?.ok) {
         toast.success('Login successful!');
         router.push('/');
+        router.refresh(); // Refresh to update session
       } else {
-        toast.error(data.message || 'Login failed');
+        toast.error(result?.error || 'Invalid email or password');
       }
     } catch (error) {
       console.error('Login error:', error);
       toast.error('Failed to login. Please try again.');
-    } finally {
-      setLoading(false);
     }
   };
 
   // Sign up function
   const signup = async (email: string, username: string, password: string, avatar: string) => {
     try {
-      setLoading(true);
       const res = await fetch('/api/auth/signup', {
         method: 'POST',
         headers: {
@@ -106,33 +87,19 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     } catch (error) {
       console.error('Signup error:', error);
       toast.error('Failed to create account. Please try again.');
-    } finally {
-      setLoading(false);
     }
   };
 
-  // Logout function
+  // Logout function using NextAuth
   const logout = async () => {
     try {
-      setLoading(true);
-      const res = await fetch('/api/auth/logout', {
-        method: 'POST',
-      });
-
-      const data = await res.json();
-
-      if (data.success) {
-        setUser(null);
-        toast.success('Logged out successfully');
-        router.push('/');
-      } else {
-        toast.error(data.message || 'Logout failed');
-      }
+      await signOut({ redirect: false });
+      toast.success('Logged out successfully');
+      router.push('/');
+      router.refresh(); // Refresh to update session
     } catch (error) {
       console.error('Logout error:', error);
       toast.error('Failed to logout. Please try again.');
-    } finally {
-      setLoading(false);
     }
   };
 

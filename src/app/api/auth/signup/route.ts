@@ -30,14 +30,19 @@ export async function POST(request: NextRequest) {
     const user = new User({
       email,
       username,
-      password,
+      password, // Will be hashed by the pre-save hook in the User model
       avatar
     });
     
     await user.save();
     
+    // Return success response - user will need to login via NextAuth
     return NextResponse.json(
-      { success: true, message: 'Account created successfully' },
+      { 
+        success: true, 
+        message: 'Account created successfully',
+        redirect: '/login' 
+      },
       { status: 201 }
     );
   } catch (error) {

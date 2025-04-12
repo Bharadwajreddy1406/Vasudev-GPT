@@ -1,10 +1,15 @@
 import { NextResponse } from 'next/server';
-import { removeAuthCookie } from '@/lib/auth';
+import { cookies } from 'next/headers';
 
 export async function POST() {
   try {
-    // Remove auth cookie
-    removeAuthCookie();
+    // NextAuth handles session deletion through its API
+    // This route just provides a custom API endpoint if needed
+    
+    // Clear any session cookies manually just to be safe
+    cookies().delete('next-auth.session-token');
+    cookies().delete('next-auth.csrf-token');
+    cookies().delete('next-auth.callback-url');
     
     return NextResponse.json({
       success: true,

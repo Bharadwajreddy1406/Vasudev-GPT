@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { verifyJWT } from './auth';
+import { getToken } from 'next-auth/jwt';
 import type { UserSession } from './auth';
 
 /**
@@ -8,19 +8,21 @@ import type { UserSession } from './auth';
  */
 export async function authenticateRequest(req: NextRequest): Promise<UserSession> {
   try {
-    const token = req.cookies.get('auth-token')?.value;
+    const token = await getToken({ 
+      req,
+      secret: process.env.NEXTAUTH_SECRET || "krishna_divine_wisdom_secret_key"
+    });
     
     if (!token) {
       throw new Error('Authentication required');
     }
     
-    const user = await verifyJWT(token);
-    
-    if (!user) {
-      throw new Error('Invalid token');
-    }
-    
-    return user;
+    return {
+      id: token.id as string,
+      email: token.email as string,
+      username: token.username as string,
+      avatar: token.avatar as string
+    };
   } catch (error) {
     throw error;
   }

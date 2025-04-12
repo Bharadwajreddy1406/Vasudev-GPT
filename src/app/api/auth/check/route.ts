@@ -1,12 +1,13 @@
 import { NextResponse } from 'next/server';
-import { getCurrentUser } from '@/lib/auth';
+import { getServerSession } from 'next-auth/next';
+import { authOptions } from '../[...nextauth]/route';
 
 export async function GET() {
   try {
-    // Get current user from auth cookie
-    const user = await getCurrentUser();
+    // Get current user from NextAuth session
+    const session = await getServerSession(authOptions);
     
-    if (!user) {
+    if (!session || !session.user) {
       return NextResponse.json({
         success: false,
         message: 'Not authenticated'
@@ -15,7 +16,7 @@ export async function GET() {
     
     return NextResponse.json({
       success: true,
-      user
+      user: session.user
     });
   } catch (error) {
     console.error('Auth check error:', error);

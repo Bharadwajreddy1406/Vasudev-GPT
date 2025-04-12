@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
-import { motion, useAnimate, useAnimationControls, animate as framerAnimate } from 'framer-motion';
+import { motion, useAnimate, animate } from 'framer-motion';
 
 interface KrishnaAnimationProps {
   className?: string;
@@ -25,7 +25,6 @@ export default function KrishnaAnimation({ className }: KrishnaAnimationProps) {
     
     // Animation 1: Krishna floats up from bottom
     animateKrishna(
-      krishnaRef.current,
       { translateY: [200, 0], opacity: [0, 1] },
       { duration: 2, ease: "easeOut" }
     );
@@ -33,7 +32,6 @@ export default function KrishnaAnimation({ className }: KrishnaAnimationProps) {
     // Animation 2: Main aura appears with a scale effect
     setTimeout(() => {
       animateAura(
-        auraRef.current,
         { scale: [0, 1], opacity: [0, 0.7] },
         { duration: 5, ease: [0.2, 0.65, 0.3, 0.9] } // Elastic ease approximation
       );
@@ -42,7 +40,6 @@ export default function KrishnaAnimation({ className }: KrishnaAnimationProps) {
     // Animation 3: Top aura appears
     setTimeout(() => {
       animateTopAura(
-        topAuraRef.current,
         { scale: [0, 1], opacity: [0, 0.9] },
         { duration: 1.8, ease: [0.2, 0.65, 0.3, 0.9] } // Elastic ease approximation
       );
@@ -51,7 +48,7 @@ export default function KrishnaAnimation({ className }: KrishnaAnimationProps) {
     // Start continuous animations after the initial sequence
     setTimeout(() => {
       // Floating animation for Krishna
-      framerAnimate(krishnaRef.current, 
+      animateKrishna(
         { translateY: ["-5px", "5px"] }, 
         { 
           duration: 7,
@@ -62,7 +59,7 @@ export default function KrishnaAnimation({ className }: KrishnaAnimationProps) {
       );
       
       // Enhanced pulsating glow for the main aura
-      framerAnimate(auraRef.current, 
+      animateAura(
         { 
           scale: [0.85, 1.15],
           opacity: [0.5, 0.7] 
@@ -76,7 +73,7 @@ export default function KrishnaAnimation({ className }: KrishnaAnimationProps) {
       );
       
       // Pulsating glow for the top aura
-      framerAnimate(topAuraRef.current, 
+      animateTopAura(
         { 
           scale: [0.82, 1.35],
           opacity: [0.65, 0.9] 
@@ -96,7 +93,6 @@ export default function KrishnaAnimation({ className }: KrishnaAnimationProps) {
         
         // Color transition animation for the main aura
         animateAuraOverlay(
-          auraOverlayRef.current,
           { opacity: [0, 0.8] },
           { duration: 8, ease: "easeInOut" }
         );
@@ -104,7 +100,7 @@ export default function KrishnaAnimation({ className }: KrishnaAnimationProps) {
     }, 2500);
     
     // No cleanup needed as Framer Motion handles this automatically
-  }, []);
+  }, [animateKrishna, animateAura, animateTopAura, animateAuraOverlay]);
   
   return (
     <div className={`relative flex items-center justify-center ${className}`} ref={containerRef}>
