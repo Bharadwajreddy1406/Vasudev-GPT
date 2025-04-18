@@ -6,7 +6,7 @@ import { PointMaterial, Points } from '@react-three/drei';
 import * as THREE from 'three';
 
 // Particle field for divine atmosphere
-function ParticleField({ count = 800, intensity = 1 }: { count?: number; intensity?: number }) {
+function ParticleField({ count = 400, intensity = 1 }: { count?: number; intensity?: number }) {
   const points = useRef<THREE.Points>(null!);
   const mousePosition = useRef({ x: 0, y: 0 });
   const { size, viewport } = useThree();

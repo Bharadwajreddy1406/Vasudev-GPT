@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
-import { motion, useAnimate, animate } from 'framer-motion';
+import { motion, useAnimate } from 'framer-motion';
 
 interface KrishnaAnimationProps {
   className?: string;
@@ -15,23 +15,26 @@ export default function KrishnaAnimation({ className }: KrishnaAnimationProps) {
   const [topAuraRef, animateTopAura] = useAnimate();
   const [auraOverlayRef, animateAuraOverlay] = useAnimate();
   
-  // Track aura color transition
-  const [auraColorTransition, setAuraColorTransition] = useState(false);
+  // Track animation state to prevent duplicate animations
+  const [animationsStarted, setAnimationsStarted] = useState(false);
   
   useEffect(() => {
-    if (!containerRef.current) return;
+    if (!containerRef.current || animationsStarted) return;
+    
+    // Set animation started to prevent duplicate animations on re-renders
+    setAnimationsStarted(true);
     
     // Initial Krishna animation sequence - sequential animations with Framer Motion
     
     // Animation 1: Krishna floats up from bottom
-    animateKrishna(
+    animateKrishna(krishnaRef.current,
       { translateY: [200, 0], opacity: [0, 1] },
       { duration: 2, ease: "easeOut" }
     );
     
     // Animation 2: Main aura appears with a scale effect
     setTimeout(() => {
-      animateAura(
+      animateAura(auraRef.current,
         { scale: [0, 1], opacity: [0, 0.7] },
         { duration: 5, ease: [0.2, 0.65, 0.3, 0.9] } // Elastic ease approximation
       );
@@ -39,7 +42,7 @@ export default function KrishnaAnimation({ className }: KrishnaAnimationProps) {
     
     // Animation 3: Top aura appears
     setTimeout(() => {
-      animateTopAura(
+      animateTopAura(topAuraRef.current,
         { scale: [0, 1], opacity: [0, 0.9] },
         { duration: 1.8, ease: [0.2, 0.65, 0.3, 0.9] } // Elastic ease approximation
       );
@@ -48,7 +51,7 @@ export default function KrishnaAnimation({ className }: KrishnaAnimationProps) {
     // Start continuous animations after the initial sequence
     setTimeout(() => {
       // Floating animation for Krishna
-      animateKrishna(
+      animateKrishna(krishnaRef.current,
         { translateY: ["-5px", "5px"] }, 
         { 
           duration: 7,
@@ -59,7 +62,7 @@ export default function KrishnaAnimation({ className }: KrishnaAnimationProps) {
       );
       
       // Enhanced pulsating glow for the main aura
-      animateAura(
+      animateAura(auraRef.current,
         { 
           scale: [0.85, 1.15],
           opacity: [0.5, 0.7] 
@@ -73,7 +76,7 @@ export default function KrishnaAnimation({ className }: KrishnaAnimationProps) {
       );
       
       // Pulsating glow for the top aura
-      animateTopAura(
+      animateTopAura(topAuraRef.current,
         { 
           scale: [0.82, 1.35],
           opacity: [0.65, 0.9] 
@@ -88,52 +91,51 @@ export default function KrishnaAnimation({ className }: KrishnaAnimationProps) {
       
       // Begin the color transition after animations start
       setTimeout(() => {
-        // Trigger aura color transition
-        setAuraColorTransition(true);
-        
         // Color transition animation for the main aura
-        animateAuraOverlay(
+        animateAuraOverlay(auraOverlayRef.current,
           { opacity: [0, 0.8] },
           { duration: 8, ease: "easeInOut" }
         );
       }, 3000); // Start color transition 3 seconds after main animations
     }, 2500);
     
-    // No cleanup needed as Framer Motion handles this automatically
-  }, [animateKrishna, animateAura, animateTopAura, animateAuraOverlay]);
+  }, [animateKrishna, animateAura, animateTopAura, animateAuraOverlay, animationsStarted]);
   
   return (
-    <div className={`relative flex items-center justify-center ${className}`} ref={containerRef}>
+    <div className={`relative flex items-center justify-center h-[400px] w-[400px] ${className}`} ref={containerRef}>
       {/* Main background aura behind Krishna */}
       <motion.div 
         ref={auraRef} 
-        className="absolute rounded-full bg-[#E8F1FF]/70 w-[400px] h-[400px] blur-xl z-0"
+        className="absolute rounded-full bg-[#E8F1FF]/70 w-[400px] h-[400px] blur-xl"
+        style={{ zIndex: 1 }}
         initial={{ opacity: 0, scale: 0 }}
       >
         {/* Amber overlay for color transition effect */}
         <motion.div 
           ref={auraOverlayRef}
-          className="absolute inset-0 rounded-full bg-amber-400/90 blur-xl z-0"
+          className="absolute inset-0 rounded-full bg-amber-400/90 blur-xl"
           initial={{ opacity: 0 }}
-          style={{ mixBlendMode: 'overlay' }}
+          style={{ mixBlendMode: 'overlay', zIndex: 2 }}
         />
       </motion.div>
 
       {/* Top-centered aura - placed behind the image but in front of the main aura */}
       <motion.div 
         ref={topAuraRef}
-        className="absolute shadow-[#63C6EB] shadow-2xl rounded-full bg-amber-400/90 w-[350px] h-[350px] blur-md top-[30px] z-1"
-        initial={{ opacity: 0, scale: 0 }}
+        className="absolute shadow-[#63C6EB] shadow-2xl rounded-full bg-amber-400/90 w-[350px] h-[350px] blur-md top-[30px]"
         style={{ 
           filter: 'drop-shadow(0 0 20px rgba(99, 198, 235, 0.8))',
-          backdropFilter: 'blur(4px)'
+          backdropFilter: 'blur(4px)',
+          zIndex: 3
         }}
+        initial={{ opacity: 0, scale: 0 }}
       />
       
       {/* Krishna image - in front of both auras */}
       <motion.div 
         ref={krishnaRef} 
-        className="relative z-10"
+        className="relative"
+        style={{ zIndex: 5 }}
         initial={{ opacity: 0 }}
       >
         <Image

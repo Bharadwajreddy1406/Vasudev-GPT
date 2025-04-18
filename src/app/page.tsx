@@ -47,9 +47,9 @@ export default function Home() {
           </motion.div>
           
           {/* Container for Krishna animation - set to lower z-index */}
-          <div className="relative" style={{ zIndex: 5 }}>
+          <div className="relative mb-8" style={{ zIndex: 5 }}>
             {/* Krishna animation with auras */}
-            <KrishnaAnimation className="z-10" />
+            <KrishnaAnimation className="mx-auto" />
           </div>
           
           {/* Input section - positioned below the Krishna image with higher z-index */}
