@@ -8,7 +8,7 @@ import { KRISHNA_SYSTEM_PROMPT } from '@/lib/krishna-prompt';
 
 export async function GET(
   request: NextRequest,
-  context: { params: { chatId: string } }
+  { params }: { params: { chatId: string } }
 ) {
   try {
     // Verify authentication
@@ -23,9 +23,6 @@ export async function GET(
         { status: 401 }
       );
     }
-    
-    // Await and extract params properly
-    const params = await context.params;
     
     // Access the chatId from params safely
     if (!params?.chatId) {
@@ -73,7 +70,7 @@ export async function GET(
 
 export async function POST(
   request: NextRequest,
-  context: { params: { chatId: string } }
+  { params }: { params: { chatId: string } }
 ) {
   try {
     // Verify authentication
@@ -88,9 +85,6 @@ export async function POST(
         { status: 401 }
       );
     }
-    
-    // Await and extract params properly
-    const params = await context.params;
     
     // Access the chatId from params safely
     if (!params?.chatId) {
