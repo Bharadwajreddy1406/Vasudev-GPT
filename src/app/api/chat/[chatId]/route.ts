@@ -6,8 +6,10 @@ import { getChatExchanges } from '@/lib/chat-utils';
 import type { Types } from 'mongoose';
 import { KRISHNA_SYSTEM_PROMPT } from '@/lib/krishna-prompt';
 
-export async function GET(request: Request, context : any) {
-  const { chatId } = context.params;
+export async function GET(request: Request, context: any) {
+  const params = await context.params;
+  const chatId = params.chatId;
+
   try {
     // Verify authentication
     const token = await getToken({ 
@@ -66,8 +68,10 @@ export async function GET(request: Request, context : any) {
   }
 }
 
-export async function POST(request: Request, context : any) {
-  const { chatId } = context.params;
+export async function POST(request: Request, context: any) {
+  const params = await context.params;
+  const chatId = params.chatId;
+
   try {
     // Verify authentication
     const token = await getToken({ 

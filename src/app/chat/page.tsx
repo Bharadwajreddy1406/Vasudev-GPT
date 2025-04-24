@@ -99,7 +99,13 @@ export default function ChatPage() {
         if (data.success) {
           // Flatten exchanges into messages array
           const allMessages: Message[] = [];
-          data.exchanges.forEach((exchange: Exchange) => {
+          
+          // Sort exchanges by timestamp to ensure chronological order (oldest first)
+          const sortedExchanges = [...data.exchanges].sort((a: Exchange, b: Exchange) => 
+            new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime()
+          );
+          
+          sortedExchanges.forEach((exchange: Exchange) => {
             exchange.messages.forEach(message => {
               allMessages.push(message);
             });
@@ -240,6 +246,15 @@ export default function ChatPage() {
     setActiveChat(chatId);
     router.push(`/chat/${chatId}`);
   };
+
+  // Handle updating a chat name
+  const handleUpdateChatName = (chatId: string, newName: string) => {
+    setChats(prevChats => prevChats.map(chat => 
+      chat.id === chatId 
+        ? { ...chat, title: newName } 
+        : chat
+    ));
+  };
   
   return (
     <div className="h-screen w-full overflow-hidden bg-slate-900 flex">
@@ -258,6 +273,7 @@ export default function ChatPage() {
           activeChat={activeChat} 
           onChatSelect={handleChatSelect}
           onNewChat={handleNewChat}
+          onUpdateChatName={handleUpdateChatName}
           isLoading={fetchingChats}
         />
         

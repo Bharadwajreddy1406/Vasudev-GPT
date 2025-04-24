@@ -57,7 +57,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         router.push('/');
         router.refresh(); // Refresh to update session
       } else {
-        toast.error(result?.error || 'Invalid email or password');
+        // More user-friendly error message
+        toast.error('Invalid email or password. Please try again.');
       }
     } catch (error) {
       console.error('Login error:', error);

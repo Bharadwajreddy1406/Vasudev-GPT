@@ -23,10 +23,11 @@ export async function POST(request: NextRequest) {
     // Get request data
     const { message } = await request.json();
     
-    // Create a new empty chat (we'll add messages later)
+    // Create a new empty chat with a unique name by adding a timestamp
+    const timestamp = new Date().toISOString().substring(11, 19).replace(/:/g, '');
     const chat = await createChat({
       userId: token.id as string,
-      name: 'New Divine Conversation', // Default name until first message
+      name: `New Divine Conversation ${timestamp}`, // Add timestamp for uniqueness
     });
     
     // If there's a message, we should process it
