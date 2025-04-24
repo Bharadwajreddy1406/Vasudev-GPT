@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse, type NextRequest } from 'next/server';
 import { getToken } from 'next-auth/jwt';
 import { callOpenAI } from '@/lib/openai-utils';
 import type { ChatMessage } from '@/lib/openai-utils';
@@ -6,14 +6,12 @@ import { getChatExchanges } from '@/lib/chat-utils';
 import type { Types } from 'mongoose';
 import { KRISHNA_SYSTEM_PROMPT } from '@/lib/krishna-prompt';
 
-export async function GET(
-  request: NextRequest,
-  { params }: { params: { chatId: string } }
-) {
+export async function GET(request: Request, context : any) {
+  const { chatId } = context.params;
   try {
     // Verify authentication
     const token = await getToken({ 
-      req: request, 
+      req: request as NextRequest, 
       secret: process.env.NEXTAUTH_SECRET || "krishna_divine_wisdom_secret_key" 
     });
     
@@ -24,8 +22,8 @@ export async function GET(
       );
     }
     
-    // Access the chatId from params safely
-    if (!params?.chatId) {
+    // Access the chatId safely
+    if (!chatId) {
       return NextResponse.json(
         { success: false, message: 'Chat ID is required' },
         { status: 400 }
@@ -33,7 +31,7 @@ export async function GET(
     }
     
     // Get messages for the specified chat
-    const exchanges = await getChatExchanges(params.chatId);
+    const exchanges = await getChatExchanges(chatId);
     
     // Format the exchanges for client
     const formattedExchanges = exchanges.map(exchange => ({
@@ -68,14 +66,12 @@ export async function GET(
   }
 }
 
-export async function POST(
-  request: NextRequest,
-  { params }: { params: { chatId: string } }
-) {
+export async function POST(request: Request, context : any) {
+  const { chatId } = context.params;
   try {
     // Verify authentication
     const token = await getToken({ 
-      req: request, 
+      req: request as NextRequest, 
       secret: process.env.NEXTAUTH_SECRET || "krishna_divine_wisdom_secret_key" 
     });
     
@@ -86,8 +82,8 @@ export async function POST(
       );
     }
     
-    // Access the chatId from params safely
-    if (!params?.chatId) {
+    // Access the chatId safely
+    if (!chatId) {
       return NextResponse.json(
         { success: false, message: 'Chat ID is required' },
         { status: 400 }
@@ -105,7 +101,7 @@ export async function POST(
     }
     
     // Get recent exchanges to build conversation context
-    const recentExchanges = await getChatExchanges(params.chatId, 3); // Get last 3 exchanges for context
+    const recentExchanges = await getChatExchanges(chatId, 3); // Get last 3 exchanges for context
     
     // Build the conversation history for OpenAI
     const messages: ChatMessage[] = [
@@ -131,7 +127,7 @@ export async function POST(
     const { handleUserMessage } = await import('@/lib/chat-utils');
     const result = await handleUserMessage({
       userId: token.id as string,
-      chatId: params.chatId,
+      chatId,
       message,
       aiResponse: aiResponse || "Response from Krishna"
     });
