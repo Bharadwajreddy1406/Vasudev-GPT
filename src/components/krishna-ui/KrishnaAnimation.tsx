@@ -106,7 +106,7 @@ export default function KrishnaAnimation({ className }: KrishnaAnimationProps) {
       {/* Main background aura behind Krishna */}
       <motion.div 
         ref={auraRef} 
-        className="absolute rounded-full bg-[#E8F1FF]/70 w-[400px] h-[400px] blur-xl"
+        className="absolute rounded-full bg-amber-400/70 w-[400px] h-[400px] blur-xl"
         style={{ zIndex: 1 }}
         initial={{ opacity: 0, scale: 0 }}
       >
@@ -122,10 +122,10 @@ export default function KrishnaAnimation({ className }: KrishnaAnimationProps) {
       {/* Top-centered aura - placed behind the image but in front of the main aura */}
       <motion.div 
         ref={topAuraRef}
-        className="absolute shadow-[#63C6EB] shadow-2xl rounded-full bg-amber-400/90 w-[350px] h-[350px] blur-md top-[30px]"
+        className="absolute shadow-amber-400 shadow-2xl rounded-full bg-amber-400/90 w-[350px] h-[350px] blur-md top-[30px]"
         style={{ 
           filter: 'drop-shadow(0 0 20px rgba(99, 198, 235, 0.8))',
-          backdropFilter: 'blur(4px)',
+          backdropFilter: 'blur(2px)',
           zIndex: 3
         }}
         initial={{ opacity: 0, scale: 0 }}
