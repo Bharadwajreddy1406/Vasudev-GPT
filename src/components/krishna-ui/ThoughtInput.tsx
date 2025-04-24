@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { SendIcon, Loader2Icon } from 'lucide-react';
+import { useAuth } from '@/context/AuthContext';
 
 interface ThoughtInputProps {
   className?: string;
@@ -12,21 +13,40 @@ interface ThoughtInputProps {
 export default function ThoughtInput({ className }: ThoughtInputProps) {
   const [thought, setThought] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const router = useRouter();
+  const { user } = useAuth();
   
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (thought.trim() && !isLoading) {
       // Show loading state
       setIsLoading(true);
+      setError(null);
       
-      // Store the thought in session storage to access in chat page
-      sessionStorage.setItem('userThought', thought);
-      
-      // Navigate to chat after a brief delay
-      setTimeout(() => {
-        router.push('/chat');
-      }, 800);
+      try {
+        // Send the thought to API to create a new chat
+        const response = await fetch('/api/chat/new', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ message: thought }),
+        });
+        
+        const data = await response.json();
+        
+        if (!response.ok) {
+          throw new Error(data.message || 'Something went wrong');
+        }
+        
+        // Navigate to the newly created chat
+        router.push(`/chat/${data.chatId}`);
+      } catch (err) {
+        console.error('Error creating chat:', err);
+        setError(err instanceof Error ? err.message : 'An error occurred');
+        setIsLoading(false);
+      }
     }
   };
   
@@ -42,15 +62,15 @@ export default function ThoughtInput({ className }: ThoughtInputProps) {
           type="text"
           value={thought}
           onChange={(e) => setThought(e.target.value)}
-          placeholder="Enter your thoughts today..."
+          placeholder={user ? "Enter your thoughts today..." : "Login to share your thoughts..."}
           className="flex-grow backdrop-blur-2xl px-4 py-3 rounded-xl border-2 border-blue-300 bg-opacity-40 text-slate-100 font-lora focus:outline-none focus:ring-2 focus:ring-blue-400"
           autoFocus
-          disabled={isLoading}
+          disabled={isLoading || !user}
         />
         <button
           type="submit"
           className="px-7 py-4 rounded-full bg-blue-600 text-white hover:bg-blue-500 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-400"
-          disabled={!thought.trim() || isLoading}
+          disabled={!thought.trim() || isLoading || !user}
         >
           {isLoading ? (
             <Loader2Icon className="h-5 w-5 animate-spin" />
@@ -59,6 +79,12 @@ export default function ThoughtInput({ className }: ThoughtInputProps) {
           )}
         </button>
       </form>
+      {error && (
+        <div className="mt-2 text-red-400 text-sm">{error}</div>
+      )}
+      {!user && (
+        <div className="mt-2 text-blue-300/70 text-sm text-center">Please login to start a conversation</div>
+      )}
     </motion.div>
   );
 }

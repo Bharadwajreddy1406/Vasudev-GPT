@@ -3,15 +3,16 @@
 import { useEffect, useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useRouter, useParams } from 'next/navigation';
+import { toast } from 'react-hot-toast';
 
 // Import our enhanced components
 import DivineBackground from '@/components/krishna-ui/DivineBackground';
 import ParticleBackground from '@/components/krishna-ui/ParticleBackground';
-import KrishnaAnimation from '@/components/krishna-ui/KrishnaAnimation';
 import ChatSidebar from '@/components/krishna-ui/ChatSidebar';
 import ChatMessage from '@/components/krishna-ui/ChatMessage';
 import ChatInput from '@/components/krishna-ui/ChatInput';
 import Navbar from '@/components/krishna-ui/Navbar';
+import { useAuth } from '@/context/AuthContext';
 
 // Message type definition
 interface Message {
@@ -26,220 +27,218 @@ interface Chat {
   title: string;
   lastMessage: string;
   timestamp: Date;
-  icon?: string; // Added icon field for unique icons
+  icon?: string;
 }
 
-// Sample dummy conversations for existing chats
-const SAMPLE_CONVERSATIONS: Record<string, Message[]> = {
-  '1': [
-    { id: '11', content: "How do I find inner peace in a chaotic world?", type: 'user' },
-    { id: '12', content: "Inner peace comes not from controlling your surroundings, but from mastering your reactions to them. Like a lotus flower that grows in muddy water yet remains unstained, you too can rise above chaos through mindfulness and detachment.", type: 'ai' },
-    { id: '13', content: "That's beautiful. How do I practice this detachment?", type: 'user' },
-    { id: '14', content: "Begin by observing your thoughts without judgment. When emotions arise, acknowledge them but don't identify with them. Remember - you are not your thoughts, but the awareness behind them. Practice daily meditation, even if just for a few minutes, to create inner stillness.", type: 'ai' }
-  ],
-  '2': [
-    { id: '21', content: "Can you explain what karma yoga means?", type: 'user' },
-    { id: '22', content: "Karma Yoga is the path of selfless action. It teaches that you have the right to perform your duties, but not to the fruits of your actions. Work without attachment to results, dedicating your efforts to the divine.", type: 'ai' },
-    { id: '23', content: "So it's about doing work without expecting rewards?", type: 'user' },
-    { id: '24', content: "Precisely. When you act without selfish motives, your work becomes worship. The secret lies in your intention - are you working for personal gain, or as an offering? This mental shift transforms ordinary actions into spiritual practice.", type: 'ai' }
-  ],
-  '3': [
-    { id: '31', content: "I find it hard to focus during meditation. Any advice?", type: 'user' },
-    { id: '32', content: "The restless mind is natural, especially for beginners. Don't fight your thoughts - that creates more disturbance. Instead, gently return your attention to your breath each time it wanders. Consistency matters more than duration.", type: 'ai' },
-    { id: '33', content: "Should I use guided meditations or music?", type: 'user' },
-    { id: '34', content: "Begin with whatever makes practice easier. Guided meditations can provide structure, while soft music may help settle the mind. Eventually, try moving toward silent meditation, where the subtler realms of consciousness become accessible.", type: 'ai' }
-  ]
-};
-
-// Example AI responses to simulate Krishna's divine wisdom
-const divineResponses = [
-  "Remember, you are not this body, you are spirit soul. The body is temporary, but the soul is eternal.",
-  "The mind is restless and difficult to control, but it can be conquered through regular practice and detachment.",
-  "Whatever happened, happened for the good. Whatever is happening, is happening for the good. Whatever will happen, will also happen for the good.",
-  "You have the right to work, but never to the fruit of the work. You should never engage in action for the sake of reward.",
-  "Perform your obligatory duty, because action is indeed better than inaction.",
-  "Change is the law of the universe. You can be a millionaire or a pauper in an instant.",
-  "The soul can never be cut into pieces by any weapon, nor can it be burned by fire, nor moistened by water, nor withered by the wind.",
-  "In the unreal there is no being, and in the real there is no non-being.",
-  "When meditation is mastered, the mind is unwavering like the flame of a lamp in a windless place."
-];
+// Exchange interface
+interface Exchange {
+  id: string;
+  messages: Message[];
+  timestamp: Date;
+  isFavorite: boolean;
+}
 
 export default function ChatPage() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [loading, setLoading] = useState(false);
+  const [fetchingChats, setFetchingChats] = useState(true);
   const [chats, setChats] = useState<Chat[]>([]);
   const [activeChat, setActiveChat] = useState<string | null>(null);
-  const [showKrishnaAnimation, setShowKrishnaAnimation] = useState(true);
+  const [showWelcomeMessage, setShowWelcomeMessage] = useState(true);
   
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
   const params = useParams();
+  const { user } = useAuth();
 
   // Get chatId from URL params
   const chatIdFromURL = params?.chatId as string;
 
-  // Initialize with sample chat history
+  // Fetch user's chats
   useEffect(() => {
-    // Create some sample chats with icons
-    const sampleChats: Chat[] = [
-      {
-        id: '1',
-        title: 'My spiritual journey',
-        lastMessage: 'How do I find inner peace?',
-        timestamp: new Date(Date.now() - 1000 * 60 * 60),
-        icon: 'lotus'
-      },
-      {
-        id: '2',
-        title: 'Bhagavad Gita questions',
-        lastMessage: 'Tell me about karma yoga',
-        timestamp: new Date(Date.now() - 1000 * 60 * 60 * 24),
-        icon: 'book'
-      },
-      {
-        id: '3', 
-        title: 'Daily meditation',
-        lastMessage: 'How to improve focus during meditation',
-        timestamp: new Date(Date.now() - 1000 * 60 * 60 * 24 * 3),
-        icon: 'sun'
+    const loadChats = async () => {
+      if (!user) return;
+      
+      try {
+        setFetchingChats(true);
+        const response = await fetch('/api/chat/recent');
+        const data = await response.json();
+        
+        if (data.success) {
+          setChats(data.chats.map((chat: any) => ({
+            id: chat._id,
+            title: chat.name,
+            lastMessage: chat.lastMessage || 'Start a conversation',
+            timestamp: new Date(chat.lastModified),
+            icon: chat.icon
+          })));
+        } else {
+          toast.error('Failed to load chats');
+        }
+      } catch (error) {
+        console.error('Error loading chats:', error);
+        toast.error('Failed to load chats');
+      } finally {
+        setFetchingChats(false);
       }
-    ];
+    };
     
-    setChats(sampleChats);
+    loadChats();
+  }, [user]);
+
+  // Load messages when a chat is selected
+  useEffect(() => {
+    const loadMessages = async () => {
+      if (!user || !activeChat) return;
+      
+      try {
+        setLoading(true);
+        const response = await fetch(`/api/chat/${activeChat}`);
+        const data = await response.json();
+        
+        if (data.success) {
+          // Flatten exchanges into messages array
+          const allMessages: Message[] = [];
+          data.exchanges.forEach((exchange: Exchange) => {
+            exchange.messages.forEach(message => {
+              allMessages.push(message);
+            });
+          });
+          
+          setMessages(allMessages);
+          setShowWelcomeMessage(allMessages.length === 0);
+        } else {
+          toast.error('Failed to load messages');
+        }
+      } catch (error) {
+        console.error('Error loading messages:', error);
+        toast.error('Failed to load messages');
+      } finally {
+        setLoading(false);
+      }
+    };
     
-    // If there's a chatId in URL, activate that chat
+    if (activeChat) {
+      loadMessages();
+    }
+  }, [activeChat, user]);
+
+  // Set active chat from URL or first chat in list
+  useEffect(() => {
     if (chatIdFromURL && chatIdFromURL !== 'new') {
       setActiveChat(chatIdFromURL);
-      
-      // Load sample conversation for this chat
-      if (SAMPLE_CONVERSATIONS[chatIdFromURL]) {
-        setMessages(SAMPLE_CONVERSATIONS[chatIdFromURL]);
-        setShowKrishnaAnimation(false);
-      }
-    } else {
-      // Otherwise set first chat as active if no specific route
-      setActiveChat('1');
+    } else if (chats.length > 0 && !activeChat) {
+      setActiveChat(chats[0].id);
     }
-  }, [chatIdFromURL]);
+  }, [chatIdFromURL, chats, activeChat]);
 
-  // Handle user's initial thought from welcome page
-  useEffect(() => {
-    const userThought = sessionStorage.getItem('userThought');
-    
-    if (userThought) {
-      // Add the user's initial thought
-      const initialUserMessage = {
-        id: Date.now().toString(),
-        content: userThought,
-        type: 'user' as const
-      };
-      
-      setMessages([initialUserMessage]);
-      setShowKrishnaAnimation(false);
-      
-      // Clear session storage to avoid repeating the message on refresh
-      sessionStorage.removeItem('userThought');
-      
-      // Simulate AI response with loading
-      setLoading(true);
-      setTimeout(() => {
-        // Random divine response from Krishna
-        const initialResponse = {
-          id: (Date.now() + 1).toString(),
-          content: divineResponses[Math.floor(Math.random() * divineResponses.length)],
-          type: 'ai' as const
-        };
-        
-        setMessages(prevMessages => [...prevMessages, initialResponse]);
-        setLoading(false);
-      }, 2000);
-    }
-  }, []);
-  
   // Scroll to bottom of messages when new ones are added
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
   
   // Handle sending a new message
-  const handleSendMessage = (content: string) => {
-    // Add user message
-    const userMessage = {
-      id: Date.now().toString(),
-      content,
-      type: 'user' as const
-    };
+  const handleSendMessage = async (content: string) => {
+    if (!activeChat || !content.trim() || loading) return;
     
-    setMessages(prevMessages => [...prevMessages, userMessage]);
-    
-    // Hide Krishna animation if showing
-    if (showKrishnaAnimation) {
-      setShowKrishnaAnimation(false);
-    }
-    
-    // Simulate AI response with loading
-    setLoading(true);
-    setTimeout(() => {
-      // Random divine response from Krishna
-      const aiResponse = {
-        id: (Date.now() + 1).toString(),
-        content: divineResponses[Math.floor(Math.random() * divineResponses.length)],
-        type: 'ai' as const
+    try {
+      // Add user message immediately for better UX
+      const userMessage: Message = {
+        id: `temp_user_${Date.now()}`,
+        content,
+        type: 'user'
       };
       
-      setMessages(prevMessages => [...prevMessages, aiResponse]);
-      setLoading(false);
+      setMessages(prevMessages => [...prevMessages, userMessage]);
+      setShowWelcomeMessage(false);
+      setLoading(true);
       
-      // Update the active chat with the latest message
-      if (activeChat) {
+      // Send the message to the server
+      const response = await fetch(`/api/chat/${activeChat}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ message: content }),
+      });
+      
+      const data = await response.json();
+      
+      if (data.success) {
+        // Add AI response
+        const aiMessage: Message = {
+          id: `ai_${Date.now()}`,
+          content: data.exchange.aiResponse,
+          type: 'ai'
+        };
+        
+        setMessages(prevMessages => [...prevMessages, aiMessage]);
+        
+        // Update the chat in the sidebar with latest message
         setChats(prevChats => prevChats.map(chat => 
           chat.id === activeChat 
             ? { ...chat, lastMessage: content, timestamp: new Date() } 
             : chat
         ));
+      } else {
+        toast.error(data.message || 'Failed to send message');
       }
-    }, 2000);
+    } catch (error) {
+      console.error('Error sending message:', error);
+      toast.error('Failed to send message');
+    } finally {
+      setLoading(false);
+    }
   };
   
   // Handle creating a new chat
-  const handleNewChat = () => {
-    // Create a new chat
-    const newChat = {
-      id: Date.now().toString(),
-      title: "New Divine Conversation",
-      lastMessage: "Begin your conversation...",
-      timestamp: new Date(),
-      icon: getRandomIcon() // Assign a random icon
-    };
+  const handleNewChat = async () => {
+    if (!user) return;
     
-    setChats([newChat, ...chats]);
-    setActiveChat(newChat.id);
-    setMessages([]);
-    setShowKrishnaAnimation(true);
-    
-    // Update URL without full refresh
-    router.push(`/chat/${newChat.id}`);
-  };
-  
-  // Get a random icon for new chats
-  const getRandomIcon = () => {
-    const icons = ['lotus', 'star', 'book', 'feather', 'sun', 'moon', 'sparkles', 'heart', 'flame', 'tree'];
-    return icons[Math.floor(Math.random() * icons.length)];
+    try {
+      // Clear current messages and show welcome message
+      setMessages([]);
+      setShowWelcomeMessage(true);
+      
+      // Create a new chat in the database
+      const response = await fetch('/api/chat/new', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ message: '' }), // Empty message to just create the chat
+      });
+      
+      const data = await response.json();
+      
+      if (data.success) {
+        // Add the new chat to the list
+        const newChat: Chat = {
+          id: data.chatId,
+          title: 'New Divine Conversation',
+          lastMessage: 'Begin your conversation...',
+          timestamp: new Date(),
+          icon: data.chat?.icon || 'lotus'
+        };
+        
+        setChats(prevChats => [newChat, ...prevChats]);
+        setActiveChat(data.chatId);
+        
+        // Update URL without full refresh
+        router.push(`/chat/${data.chatId}`);
+      } else {
+        toast.error(data.message || 'Failed to create new chat');
+      }
+    } catch (error) {
+      console.error('Error creating new chat:', error);
+      toast.error('Failed to create new chat');
+    }
   };
   
   // Handle selecting a chat
   const handleChatSelect = (chatId: string) => {
     setActiveChat(chatId);
-    
-    // Load conversation for this chat if available
-    if (SAMPLE_CONVERSATIONS[chatId]) {
-      setMessages(SAMPLE_CONVERSATIONS[chatId]);
-      setShowKrishnaAnimation(false);
-    } else {
-      // For new chats that don't have sample conversations
-      setMessages([]);
-      setShowKrishnaAnimation(true);
-    }
+    router.push(`/chat/${chatId}`);
   };
   
   return (
@@ -259,14 +258,15 @@ export default function ChatPage() {
           activeChat={activeChat} 
           onChatSelect={handleChatSelect}
           onNewChat={handleNewChat}
+          isLoading={fetchingChats}
         />
         
         {/* Main chat area */}
         <div className="flex-1 flex flex-col h-full relative">
           {/* Chat content area with increased padding to account for navbar */}
           <div className="flex-1 flex flex-col overflow-hidden pt-8">
-            {/* Show welcome message instead of KrishnaAnimation when there are no messages */}
-            {showKrishnaAnimation && messages.length === 0 && (
+            {/* Show welcome message when there are no messages */}
+            {showWelcomeMessage && (
               <div className="flex-1 flex items-center justify-center">
                 <div className="text-center relative">
                   {/* Divine glow effect behind text */}
@@ -297,7 +297,7 @@ export default function ChatPage() {
             )}
             
             {/* Messages container */}
-            <div className={`flex-1 overflow-y-auto px-4 md:px-8 lg:px-16 py-4 space-y-4 ${showKrishnaAnimation && messages.length === 0 ? 'hidden' : 'block'}`}>
+            <div className={`flex-1 overflow-y-auto px-4 md:px-8 lg:px-16 py-4 space-y-4 ${showWelcomeMessage ? 'hidden' : 'block'}`}>
               <AnimatePresence>
                 {messages.map((message, index) => (
                   <ChatMessage 

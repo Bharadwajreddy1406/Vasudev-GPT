@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getToken } from 'next-auth/jwt';
-import { getUserRecentActivity } from '@/lib/chat-utils';
+import { getUserChats } from '@/lib/chat-utils';
 
 export async function GET(request: NextRequest) {
   try {
@@ -17,16 +17,16 @@ export async function GET(request: NextRequest) {
       );
     }
     
-    // Get recent chat activity for the user
-    const recentActivity = await getUserRecentActivity(token.id as string);
+    // Get recent chats for the user
+    const chats = await getUserChats(token.id as string);
     
     return NextResponse.json({ 
       success: true, 
-      data: recentActivity 
+      chats
     });
     
   } catch (error: any) {
-    console.error('Error fetching recent chat activity:', error);
+    console.error('Error getting recent chats:', error);
     return NextResponse.json(
       { success: false, message: error.message || 'An error occurred' },
       { status: 500 }

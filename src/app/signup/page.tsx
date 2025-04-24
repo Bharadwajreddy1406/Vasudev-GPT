@@ -19,10 +19,15 @@ export default function SignupPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
 
-  // Randomly select an avatar on component mount
-  useEffect(() => {
+  // Function to randomly select an avatar
+  const getRandomAvatar = () => {
     const randomIndex = Math.floor(Math.random() * imageUrls.length);
     setAvatar(imageUrls[randomIndex]);
+  };
+
+  // Randomly select an avatar on component mount
+  useEffect(() => {
+    getRandomAvatar();
   }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -160,18 +165,30 @@ export default function SignupPage() {
               <label className="text-sm font-medium block mb-2" style={{ color: 'oklch(35% 0.1 250)' }}>
                 Your Avatar
               </label>
-              <div className="flex justify-center mb-4">
+              <div className="flex flex-col items-center mb-4">
                 {avatar && (
                   <Image 
                     src={avatar} 
                     alt="Selected avatar" 
                     width={80} 
                     height={80} 
-                    className="rounded-full"
+                    className="rounded-full mb-3 border-2 border-[oklch(85%_0.1_250)] hover:border-[oklch(70%_0.2_250)] transition-all duration-200"
                   />
                 )}
+                <Button
+                  type="button"
+                  onClick={getRandomAvatar}
+                  className="text-sm py-1 px-3 mt-2"
+                  variant="outline"
+                  style={{ 
+                    borderColor: 'oklch(85% 0.1 250)',
+                    color: 'oklch(45% 0.2 250)'
+                  }}
+                >
+                  ✨ Pick Another Avatar
+                </Button>
               </div>
-              <p className="text-xs text-center text-gray-500">A random avatar has been selected for you</p>
+              <p className="text-xs text-center text-gray-500">Click the button to try different avatars</p>
             </div>
             
             <Button

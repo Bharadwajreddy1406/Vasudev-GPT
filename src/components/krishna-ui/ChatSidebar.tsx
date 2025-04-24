@@ -15,6 +15,7 @@ import {
   SparklesIcon,
   HeartIcon,
   FlameIcon,
+  Loader2Icon,
 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 
@@ -31,6 +32,7 @@ interface ChatSidebarProps {
   activeChat: string | null;
   onChatSelect: (chatId: string) => void;
   onNewChat: () => void;
+  isLoading?: boolean;
 }
 
 // Map of possible icons for chats
@@ -47,7 +49,7 @@ const CHAT_ICONS = {
   'tree': MessageSquareIcon
 };
 
-export default function ChatSidebar({ chats, activeChat, onChatSelect, onNewChat }: ChatSidebarProps) {
+export default function ChatSidebar({ chats, activeChat, onChatSelect, onNewChat, isLoading = false }: ChatSidebarProps) {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const router = useRouter();
@@ -126,68 +128,89 @@ export default function ChatSidebar({ chats, activeChat, onChatSelect, onNewChat
           </motion.button>
         </div>
         
-        {/* Chat list */}
+        {/* Chat list with loading and empty states */}
         <div className="flex-1 overflow-y-auto py-2 scroll-smooth">
-          <AnimatePresence>
-            {chats.map((chat) => (
-              <motion.div
-                key={chat.id}
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -20 }}
-                transition={{ duration: 0.2 }}
-                className={`relative cursor-pointer my-1 mx-1`}
-                onClick={() => handleChatSelect(chat.id)}
-                whileHover={{ 
-                  scale: 1.02,
-                  transition: { duration: 0.2 }
-                }}
-              >
-                {/* Selection indicator */}
-                {activeChat === chat.id && (
-                  <motion.div 
-                    className="absolute left-0 top-0 bottom-0 w-[3px] bg-amber-400 rounded-full"
-                    layoutId="activeChat"
-                    initial={{ opacity: 0 }}
-                    animate={{ 
-                      opacity: 1,
-                      boxShadow: "0 0 8px 2px rgba(245, 158, 11, 0.4)"
-                    }}
-                    transition={{ duration: 0.3 }}
-                  />
-                )}
-                
-                {/* Chat item content */}
-                <div 
-                  className={`flex items-center px-3 py-3 rounded-md ${
-                    activeChat === chat.id 
-                      ? 'bg-amber-800/20 text-amber-200 shadow-inner shadow-amber-500/10'
-                      : 'text-amber-200/80 hover:bg-amber-600/10' 
-                  }`}
+          {isLoading ? (
+            // Loading state
+            <div className="flex flex-col items-center justify-center h-32">
+              <Loader2Icon className="h-5 w-5 text-amber-300 animate-spin mb-2" />
+              {!isCollapsed && (
+                <p className="text-xs text-amber-300/70">Loading conversations...</p>
+              )}
+            </div>
+          ) : chats.length === 0 ? (
+            // Empty state
+            <div className="flex flex-col items-center justify-center h-32 px-4">
+              {!isCollapsed && (
+                <>
+                  <MessageSquareIcon className="h-5 w-5 text-amber-300/50 mb-2" />
+                  <p className="text-xs text-center text-amber-300/70">No conversations yet. Start a new divine dialogue.</p>
+                </>
+              )}
+            </div>
+          ) : (
+            // Chat list
+            <AnimatePresence>
+              {chats.map((chat) => (
+                <motion.div
+                  key={chat.id}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -20 }}
+                  transition={{ duration: 0.2 }}
+                  className={`relative cursor-pointer my-1 mx-1`}
+                  onClick={() => handleChatSelect(chat.id)}
+                  whileHover={{ 
+                    scale: 1.02,
+                    transition: { duration: 0.2 }
+                  }}
                 >
-                  {/* Dynamic icon based on chat */}
-                  <div className={`
-                    flex-shrink-0
-                    ${activeChat === chat.id 
-                      ? 'text-amber-400 animate-pulse' 
-                      : 'text-amber-300/70'
-                    }
-                  `}>
-                    {getChatIcon(chat)}
-                  </div>
-                  
-                  {!isCollapsed && (
-                    <div className="ml-3 overflow-hidden">
-                      <p className="text-sm font-medium truncate">{chat.title}</p>
-                      <p className="text-xs text-amber-200/50 truncate">
-                        {chat.lastMessage}
-                      </p>
-                    </div>
+                  {/* Selection indicator */}
+                  {activeChat === chat.id && (
+                    <motion.div 
+                      className="absolute left-0 top-0 bottom-0 w-[3px] bg-amber-400 rounded-full"
+                      layoutId="activeChat"
+                      initial={{ opacity: 0 }}
+                      animate={{ 
+                        opacity: 1,
+                        boxShadow: "0 0 8px 2px rgba(245, 158, 11, 0.4)"
+                      }}
+                      transition={{ duration: 0.3 }}
+                    />
                   )}
-                </div>
-              </motion.div>
-            ))}
-          </AnimatePresence>
+                  
+                  {/* Chat item content */}
+                  <div 
+                    className={`flex items-center px-3 py-3 rounded-md ${
+                      activeChat === chat.id 
+                        ? 'bg-amber-800/20 text-amber-200 shadow-inner shadow-amber-500/10'
+                        : 'text-amber-200/80 hover:bg-amber-600/10' 
+                    }`}
+                  >
+                    {/* Dynamic icon based on chat */}
+                    <div className={`
+                      flex-shrink-0
+                      ${activeChat === chat.id 
+                        ? 'text-amber-400 animate-pulse' 
+                        : 'text-amber-300/70'
+                      }
+                    `}>
+                      {getChatIcon(chat)}
+                    </div>
+                    
+                    {!isCollapsed && (
+                      <div className="ml-3 overflow-hidden">
+                        <p className="text-sm font-medium truncate">{chat.title}</p>
+                        <p className="text-xs text-amber-200/50 truncate">
+                          {chat.lastMessage}
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                </motion.div>
+              ))}
+            </AnimatePresence>
+          )}
         </div>
         
         {/* Footer with collapse button (desktop only) */}
