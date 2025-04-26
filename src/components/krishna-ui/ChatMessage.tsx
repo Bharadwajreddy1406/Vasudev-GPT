@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { JSX } from 'react';
 import { motion } from 'framer-motion';
 
 type MessageType = 'ai' | 'user';
@@ -11,6 +11,37 @@ interface ChatMessageProps {
   className?: string;
   isLatest?: boolean;
 }
+
+// Helper function to format AI responses in a poetic style
+const formatMeditativeResponse = (content: string): JSX.Element => {
+  // Split the content by newlines, periods, question marks, or commas followed by spaces
+  const segments = content.split(/(?<=\.\s|\?\s|\,\s|\n)/);
+  
+  return (
+    <>
+      {segments.map((segment, index) => {
+        // Skip empty segments
+        if (!segment.trim()) return null;
+        
+        return (
+          <React.Fragment key={index}>
+            <p className="relative font-cinzel text-base font-semibold mb-3" style={{
+              background: 'linear-gradient(to bottom, #f6e05e, #b7791f)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent'
+            }}>
+              {segment.trim()}
+            </p>
+            {/* Add small divider between segments except for the last one */}
+            {/* {index < segments.length - 1 && segments.length > 1 && (
+              <div className="h-[1px] w-1/2 mx-auto bg-gradient-to-r from-transparent via-blue-400/20 to-transparent my-2" />
+            )} */}
+          </React.Fragment>
+        );
+      })}
+    </>
+  );
+};
 
 export default function ChatMessage({ type, content, className, isLatest = false }: ChatMessageProps) {
   return (
@@ -33,14 +64,8 @@ export default function ChatMessage({ type, content, className, isLatest = false
             {/* Divine emanation effect for AI message */}
             <div className="absolute inset-0 rounded-lg bg-blue-100/5 blur-md -m-2" />
             
-            {/* Main text */}
-            <p className="relative font-cinzel text-base font-semibold" style={{
-              background: 'linear-gradient(to bottom, #f6e05e, #b7791f)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent'
-            }}>
-              {content}
-            </p>
+            {/* Format AI message in meditative style */}
+            {formatMeditativeResponse(content)}
             
             {/* Divine separator */}
             {content.length > 50 && (

@@ -2,6 +2,7 @@
 
 import { SessionProvider } from "next-auth/react";
 import { AuthProvider } from "@/context/AuthContext";
+import { ChatProvider } from "@/context/ChatContext";
 import { useState, useEffect } from "react";
 
 export default function ClientProviders({
@@ -25,7 +26,9 @@ export default function ClientProviders({
   return (
     <SessionProvider>
       <AuthProvider>
-        {children}
+        <ChatProvider>
+          {children}
+        </ChatProvider>
       </AuthProvider>
     </SessionProvider>
   );
