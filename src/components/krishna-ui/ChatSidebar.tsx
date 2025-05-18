@@ -205,15 +205,14 @@ export default function ChatSidebar({ chats, activeChat, onChatSelect, onNewChat
           {isCollapsed ? <ChevronRightIcon className="text-amber-400 h-4 w-4" /> : <ChevronLeftIcon className="text-amber-400 h-4 w-4" />}
         </motion.button>
       )}
-      
-      <motion.div
+        <motion.div
         className={`bg-slate-900/60 mt-1 backdrop-blur-md border-r border-amber-500/20 h-full flex flex-col z-20 overflow-hidden`}
         initial={{ width: isMobile ? 0 : 280 }}
         animate={{ 
           width: isCollapsed ? (isMobile ? 0 : 60) : 280,
           boxShadow: "0 0 10px rgba(245, 158, 11, 0.1)"
         }}
-        transition={{ duration: 0.3, ease: "easeInOut" }}
+        transition={{ duration: 0.2, ease: "easeOut" }} // Faster, smoother transition
       >
         {/* Header with New Chat button */}
         <div className="p-3 border-b border-amber-500/20">
@@ -250,23 +249,21 @@ export default function ChatSidebar({ chats, activeChat, onChatSelect, onNewChat
             </div>
           ) : (
             // Chat list
-            <AnimatePresence>
-              {chats.map((chat) => (
+            <AnimatePresence>              {chats.map((chat) => (
                 <motion.div
                   key={chat.id}
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0, x: -20 }}
-                  transition={{ duration: 0.2 }}
+                  transition={{ duration: 0.15 }} // Faster animation for better responsiveness
                   className={`relative cursor-pointer my-1 mx-1`}
                   onClick={() => handleChatSelect(chat.id)}
                   onDoubleClick={(e) => handleDoubleClick(chat, e)}
                   whileHover={{ 
-                    scale: 1.02,
-                    transition: { duration: 0.2 }
+                    scale: 1.01, // Reduced scale for subtler effect
+                    transition: { duration: 0.15 } // Faster response
                   }}
-                >
-                  {/* Selection indicator */}
+                >                  {/* Selection indicator */}
                   {activeChat === chat.id && (
                     <motion.div 
                       className="absolute left-0 top-0 bottom-0 w-[3px] bg-amber-400 rounded-full"
@@ -274,9 +271,9 @@ export default function ChatSidebar({ chats, activeChat, onChatSelect, onNewChat
                       initial={{ opacity: 0 }}
                       animate={{ 
                         opacity: 1,
-                        boxShadow: "0 0 8px 2px rgba(245, 158, 11, 0.4)"
+                        boxShadow: "0 0 6px 1px rgba(245, 158, 11, 0.3)" // Reduced shadow for subtler effect
                       }}
-                      transition={{ duration: 0.3 }}
+                      transition={{ duration: 0.2 }} // Faster animation
                     />
                   )}
                   

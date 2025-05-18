@@ -26,8 +26,8 @@ const ClickSpark: React.FC<ClickSparkProps> = ({
   sparkColor = "#fff",
   sparkSize = 10,
   sparkRadius = 15,
-  sparkCount = 8,
-  duration = 400,
+  sparkCount = 6, // Reduced count for better performance
+  duration = 350, // Slightly faster duration for snappier response
   easing = "ease-out",
   extraScale = 1.0,
   children,

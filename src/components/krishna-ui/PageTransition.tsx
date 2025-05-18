@@ -15,14 +15,13 @@ export default function PageTransition({ children }: PageTransitionProps) {
     <AnimatePresence mode="wait">
       <motion.div
         key={pathname}
-        initial={{ opacity: 0, y: 20 }}
+        initial={{ opacity: 0, y: 10 }} // Reduced distance for subtler transition
         animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: -20 }}
+        exit={{ opacity: 0, y: -5 }} // Reduced distance for quicker exit
         transition={{
-          type: 'spring',
-          stiffness: 100,
-          damping: 20,
-          duration: 0.5
+          type: 'tween', // Changed from spring to tween for smoother transition
+          duration: 0.25, // Faster transition for better responsiveness
+          ease: 'easeOut' // Smoother easing function
         }}
       >
         {children}

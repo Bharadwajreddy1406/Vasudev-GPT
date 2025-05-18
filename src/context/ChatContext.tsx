@@ -175,13 +175,15 @@ export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setFetchingChats(false);
     }
   };
-
   // Fetch messages for a specific chat
   const fetchMessages = async (chatId: string) => {
     if (!user || !chatId) return;
     
     try {
-      setLoading(true);
+      // Only set loading true if we're actually sending a new message
+      // For initial load of chat history, we don't want to show the "Krishna is contemplating" message
+      // setLoading(true); - Remove this line to fix the issue
+      
       const response = await fetch(`/api/chat/${chatId}`);
       const data = await response.json();
       
@@ -197,9 +199,7 @@ export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({ children
           exchange.messages.forEach(message => {
             allMessages.push(message);
           });
-        });
-        
-        setMessages(allMessages);
+        });        setMessages(allMessages);
         setShowWelcomeMessage(allMessages.length === 0);
       } else {
         toast.error('Failed to load messages');
@@ -208,6 +208,8 @@ export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({ children
       console.error('Error loading messages:', error);
       toast.error('Failed to load messages');
     } finally {
+      // Ensure loading is always false after fetching messages
+      // This will clear any existing loading state that might be active
       setLoading(false);
     }
   };

@@ -1,15 +1,15 @@
 'use client';
 
-import React, { useRef, useMemo, useEffect, useState } from 'react';
+import React, { useRef, useMemo, useEffect } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { PointMaterial, Points } from '@react-three/drei';
 import * as THREE from 'three';
 
-// Particle field for divine atmosphere
-function ParticleField({ count = 400, intensity = 1 }: { count?: number; intensity?: number }) {
+// Particle field for divine atmosphere - optimized for performance
+function ParticleField({ count = 300, intensity = 1 }: { count?: number; intensity?: number }) {
   const points = useRef<THREE.Points>(null!);
   const mousePosition = useRef({ x: 0, y: 0 });
-  const { size, viewport } = useThree();
+  const { size } = useThree();
   
   // Track mouse position within the canvas
   useEffect(() => {
@@ -25,7 +25,7 @@ function ParticleField({ count = 400, intensity = 1 }: { count?: number; intensi
     };
   }, [size]);
 
-  // Create particles with random positions and velocities
+  // Create particles with random positions and velocities - optimized count
   const [particlesData, particlesPosition] = useMemo(() => {
     const positions = new Float32Array(count * 3);
     const particleData = Array(count).fill(0).map(() => ({
@@ -57,44 +57,46 @@ function ParticleField({ count = 400, intensity = 1 }: { count?: number; intensi
     return [particleData, positions];
   }, [count]);
   
-  // Animate the particles with cursor interaction
+  // Animate the particles with cursor interaction - optimized for performance
   useFrame((state) => {
     const { clock } = state;
     if (points.current) {
-      // Base rotation for ambient movement
-      points.current.rotation.x = Math.sin(clock.getElapsedTime() / 10) * 0.2;
-      points.current.rotation.y = Math.cos(clock.getElapsedTime() / 8) * 0.1;
+      // Base rotation for ambient movement - slowed down for smoother motion
+      points.current.rotation.x = Math.sin(clock.getElapsedTime() / 15) * 0.1; // Reduced amplitude and frequency
+      points.current.rotation.y = Math.cos(clock.getElapsedTime() / 12) * 0.05; // Reduced amplitude and frequency
       
-      // Cursor-based movement
-      const cursorInfluence = 0.15; // Control the strength of cursor influence
+      // Cursor-based movement - reduced influence
+      const cursorInfluence = 0.08; // Reduced cursor influence for smoother feel
       points.current.rotation.x += mousePosition.current.y * cursorInfluence;
       points.current.rotation.y += mousePosition.current.x * cursorInfluence;
       
-      // Create depth movement to enhance 3D feeling
+      // Create depth movement to enhance 3D feeling - optimized for performance
       const positions = points.current.geometry.attributes.position.array as Float32Array;
       
-      for (let i = 0; i < count; i++) {
+      // Update only a portion of particles each frame for better performance
+      const updateCount = Math.min(count, 60); // Limit updates per frame
+      const startIdx = Math.floor(clock.getElapsedTime() * 30) % (count - updateCount);
+      
+      for (let i = startIdx; i < startIdx + updateCount; i++) {
         const i3 = i * 3;
         
-        // Calculate distance from cursor in screen space
         const x = positions[i3];
         const y = positions[i3 + 1];
-        const z = positions[i3 + 2];
         
-        // Apply cursor-influenced movement
+        // Apply cursor-influenced movement with reduced calculation
         const distanceFromCursor = Math.sqrt(
           Math.pow(x - mousePosition.current.x, 2) + 
           Math.pow(y - mousePosition.current.y, 2)
-        );
+        ) * 0.5; // Scaled for better performance
         
-        const time = clock.getElapsedTime();
-        const offset = i * 0.01;
+        const time = clock.getElapsedTime() * 0.5; // Slowed down time factor
+        const offset = i * 0.005; // Reduced offset increment
         
-        // Apply a wave-like movement based on distance from cursor
-        const dynamicOffset = Math.sin(time + offset) * 0.01;
-        const mouseEffect = Math.max(0, (1 - Math.min(distanceFromCursor, 1))) * 0.05;
+        // Apply more subtle wave movement
+        const dynamicOffset = Math.sin(time + offset) * 0.007; // Reduced amplitude
+        const mouseEffect = Math.max(0, (1 - Math.min(distanceFromCursor, 1))) * 0.03; // Reduced effect
         
-        // Apply individual particle movement
+        // Apply smoother, less dramatic individual particle movement
         positions[i3] = particlesData[i].initialPosition.x + 
                         dynamicOffset + 
                         mousePosition.current.x * mouseEffect;
@@ -104,7 +106,7 @@ function ParticleField({ count = 400, intensity = 1 }: { count?: number; intensi
                             mousePosition.current.y * mouseEffect;
                             
         positions[i3 + 2] = particlesData[i].initialPosition.z + 
-                            Math.sin(time * 0.5 + offset * 5) * 0.05;
+                            Math.sin(time * 0.3 + offset * 3) * 0.03; // Reduced amplitude and frequency
       }
       
       points.current.geometry.attributes.position.needsUpdate = true;
@@ -137,7 +139,7 @@ export default function ParticleBackground({ intensity = 1, className }: Particl
     <div className={`fixed inset-0 z-0 ${className}`}>
       <Canvas camera={{ position: [0, 0, 3], fov: 60 }}>
         <ambientLight intensity={0.5} />
-        <ParticleField intensity={intensity} />
+        <ParticleField count={300} intensity={intensity} />
       </Canvas>
     </div>
   );

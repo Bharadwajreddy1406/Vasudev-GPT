@@ -28,14 +28,13 @@ export default function Navbar() {
     }
   };
 
-  return (
-    <motion.nav 
+  return (    <motion.nav 
       className={`fixed top-0 left-0 right-0 z-50 px-4 py-4 bg-transparent ${
         isOnChatPage ? 'border-b border-amber-500/20 shadow-xs shadow-amber-500/10' : ''
       }`}
-      initial={{ opacity: 0, y: -20 }}
+      initial={{ opacity: 0, y: -10 }} // Reduced distance for subtler motion
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.8, ease: "easeOut" }}
+      transition={{ duration: 0.4, ease: "easeOut" }} // Faster animation for better responsiveness
     >
       <div className="container mx-auto flex justify-between items-center">
         {/* Logo */}

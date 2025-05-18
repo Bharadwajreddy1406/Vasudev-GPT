@@ -24,80 +24,80 @@ export default function KrishnaAnimation({ className }: KrishnaAnimationProps) {
     // Set animation started to prevent duplicate animations on re-renders
     setAnimationsStarted(true);
     
-    // Initial Krishna animation sequence - sequential animations with Framer Motion
+    // Initial Krishna animation sequence - optimized timing for smoother transition
     
-    // Animation 1: Krishna floats up from bottom
+    // Animation 1: Krishna appears with fade-in (reduced vertical distance)
     animateKrishna(krishnaRef.current,
-      { translateY: [200, 0], opacity: [0, 1] },
-      { duration: 2, ease: "easeOut" }
+      { translateY: [100, 0], opacity: [0, 1] },
+      { duration: 1.2, ease: "easeOut" }
     );
     
-    // Animation 2: Main aura appears with a scale effect
+    // Animation 2: Main aura appears with a scale effect (start sooner, finish faster)
     setTimeout(() => {
       animateAura(auraRef.current,
         { scale: [0, 1], opacity: [0, 0.7] },
-        { duration: 5, ease: [0.2, 0.65, 0.3, 0.9] } // Elastic ease approximation
+        { duration: 1.8, ease: "easeOut" } // Simplified ease for better performance
       );
-    }, 1500); // Start 1.5s after first animation starts
+    }, 300); // Start much sooner after first animation starts
     
-    // Animation 3: Top aura appears
+    // Animation 3: Top aura appears (start sooner, finish faster)
     setTimeout(() => {
       animateTopAura(topAuraRef.current,
         { scale: [0, 1], opacity: [0, 0.9] },
-        { duration: 1.8, ease: [0.2, 0.65, 0.3, 0.9] } // Elastic ease approximation
+        { duration: 1.2, ease: "easeOut" } // Simplified ease for better performance
       );
-    }, 1800); // Start 1.8s after beginning
+    }, 600); // Start sooner for more cohesive appearance
     
-    // Start continuous animations after the initial sequence
+    // Start continuous animations right after the initial sequence completes
     setTimeout(() => {
-      // Floating animation for Krishna
+      // Floating animation for Krishna - slower and more subtle
       animateKrishna(krishnaRef.current,
-        { translateY: ["-5px", "5px"] }, 
+        { translateY: ["-3px", "3px"] }, 
         { 
-          duration: 7,
+          duration: 5,
           repeat: Infinity,
           repeatType: "reverse",
           ease: "easeInOut"
         }
       );
       
-      // Enhanced pulsating glow for the main aura
+      // Enhanced pulsating glow for the main aura - gentler, less distracting
       animateAura(auraRef.current,
         { 
-          scale: [0.85, 1.15],
-          opacity: [0.5, 0.7] 
+          scale: [0.92, 1.08], // Reduced scale change for subtlety
+          opacity: [0.6, 0.7] // Less opacity variation
         }, 
         { 
-          duration: 4,
+          duration: 5, // Slower for gentle pulsing
           repeat: Infinity,
           repeatType: "reverse",
-          ease: [0.45, 0, 0.55, 1] // cubicBezier equivalent
+          ease: "easeInOut" // Simplified for smoother animation
         }
       );
       
-      // Pulsating glow for the top aura
+      // Pulsating glow for the top aura - gentler, coordinated with main aura
       animateTopAura(topAuraRef.current,
         { 
-          scale: [0.82, 1.35],
-          opacity: [0.65, 0.9] 
+          scale: [0.9, 1.1], // Reduced scale range
+          opacity: [0.7, 0.85] // Less dramatic change
         }, 
         {
-          duration: 4.2,
+          duration: 5.5, // Slightly offset from main aura for natural feel
           repeat: Infinity,
           repeatType: "reverse",
-          ease: [0.45, 0, 0.55, 1] // cubicBezier equivalent
+          ease: "easeInOut" // Simplified for smoother animation
         }
       );
       
       // Begin the color transition after animations start
       setTimeout(() => {
-        // Color transition animation for the main aura
+        // Color transition animation for the main aura - quicker but still smooth
         animateAuraOverlay(auraOverlayRef.current,
-          { opacity: [0, 0.8] },
-          { duration: 8, ease: "easeInOut" }
+          { opacity: [0, 0.7] },
+          { duration: 3, ease: "easeInOut" }
         );
-      }, 3000); // Start color transition 3 seconds after main animations
-    }, 2500);
+      }, 1000); // Start color transition sooner
+    }, 1500); // Start continuous animations sooner
     
   }, [animateKrishna, animateAura, animateTopAura, animateAuraOverlay, animationsStarted]);
   

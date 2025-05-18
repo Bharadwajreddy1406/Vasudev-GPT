@@ -40,21 +40,20 @@ export default function ChatInput({ onSend, className, isLoading = false }: Chat
       return;
     }
 
-    if (message.trim() && !isLoading) {
-      // Animate button with Framer Motion
+    if (message.trim() && !isLoading) {      // Animate button with Framer Motion
       animateButton(buttonRef.current, { 
-        scale: [1, 1.2, 1] 
+        scale: [1, 1.15, 1] // Reduced scale for smoother effect
       }, { 
-        duration: 0.3,
+        duration: 0.2, // Faster animation
         ease: "easeInOut" 
       });
 
       // Animate glow effect with Framer Motion
       animateGlow(glowRef.current, { 
-        opacity: [0, 0.8, 0],
-        scale: [1, 1.5]
+        opacity: [0, 0.6, 0], // Reduced opacity for subtler effect
+        scale: [1, 1.3] // Reduced scale change
       }, { 
-        duration: 0.4,
+        duration: 0.3, // Faster animation
         ease: "easeInOut" 
       });
 
@@ -73,13 +72,12 @@ export default function ChatInput({ onSend, className, isLoading = false }: Chat
       }
     }
   };
-
   return (
     <motion.div 
       className={`w-full ${className}`}
-      initial={{ y: 20, opacity: 0 }}
+      initial={{ y: 10, opacity: 0 }} // Reduced distance for smoother entry
       animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.5 }}
+      transition={{ duration: 0.3 }} // Faster animation
     >
       <form ref={formRef} onSubmit={handleSubmit} className="flex  gap-3  ">
         {/* Chat input area */}

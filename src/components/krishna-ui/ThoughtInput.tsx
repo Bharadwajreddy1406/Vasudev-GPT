@@ -49,13 +49,12 @@ export default function ThoughtInput({ className }: ThoughtInputProps) {
       }
     }
   };
-  
-  return (
+    return (
     <motion.div 
       className={`w-full mx-auto ${className}`}
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.7, delay: 2.5 }}
+      transition={{ duration: 0.5, delay: 1.0 }} // Matches the timing in page.tsx
     >
       <form onSubmit={handleSubmit} className="flex items-center gap-2">
         <input

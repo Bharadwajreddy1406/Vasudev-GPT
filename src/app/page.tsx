@@ -31,12 +31,11 @@ export default function Home() {
       
       {/* Main content */}
       <main className="flex flex-col items-center justify-center flex-grow px-4 relative z-10">
-        <div className="flex flex-col items-center max-w-4xl w-full">
-          <motion.div
+        <div className="flex flex-col items-center max-w-4xl w-full">          <motion.div
             className="text-center mb-6 sm:mb-8"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 1 }}
+            transition={{ duration: 0.6 }} // Faster appearance for header
           >
             <h1 className="text-3xl sm:text-4xl md:text-5xl font-cinzel divine-text mb-3 sm:mb-4">
               Divine Wisdom
@@ -57,7 +56,7 @@ export default function Home() {
             className="mt-0 w-full relative z-20"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 0.7, delay: 2.5 }}
+            transition={{ duration: 0.5, delay: 1.0 }} // Reduced delay for faster appearance
           >
             <ThoughtInput />
           </motion.div>
@@ -82,14 +81,13 @@ export default function Home() {
             whileHover={{ 
               scale: 1.1,
               boxShadow: "0 0 15px rgba(59, 130, 246, 0.5)"
-            }}
-            whileTap={{ scale: 0.95 }}
+            }}            whileTap={{ scale: 0.95 }}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 2 }}
+            transition={{ duration: 0.4, delay: 1.2 }} // Reduced delay for quicker appearance
           >
-            {/* Divine glow effect */}
-            <div className="absolute inset-0 rounded-full bg-blue-500/20 blur-md animate-pulse" style={{ animationDuration: '2s' }}></div>
+            {/* Divine glow effect - reduced animation duration */}
+            <div className="absolute inset-0 rounded-full bg-blue-500/20 blur-md animate-pulse" style={{ animationDuration: '3s' }}></div>
             <div className="absolute inset-0 rounded-full bg-blue-600/10 blur-sm"></div>
             
             {/* Icon */}
