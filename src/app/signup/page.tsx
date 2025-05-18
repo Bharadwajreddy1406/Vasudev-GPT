@@ -159,12 +159,11 @@ export default function SignupPage() {
       <div className="w-full lg:w-1/2 flex items-center justify-center relative bg-gradient-to-b from-[#031C3E] to-[#092A5E] overflow-y-hidden">
         <StarryBackground />
         
-        {/* Form container with glassmorphic effect */}
-        <motion.div 
+        {/* Form container with glassmorphic effect */}        <motion.div 
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.8 }}
-          className="w-full max-w-md backdrop-blur-md bg-white/5 border border-white/10 rounded-2xl shadow-lg p-6"
+          className="w-full max-w-md backdrop-blur-md bg-white/5 border border-white/10 rounded-2xl shadow-lg p-4 sm:p-6 mx-4 sm:mx-auto"
         >
           <motion.h1 
             initial={{ opacity: 0, y: -20 }}

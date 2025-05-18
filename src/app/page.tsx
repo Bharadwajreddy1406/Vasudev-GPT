@@ -23,8 +23,7 @@ export default function Home() {
 
   return (
     <div className="h-screen w-full overflow-hidden bg-gradient-to-b from-blue-950 to-blue-900 flex flex-col">
-      {/* 3D particles background */}
-      <ParticleBackground intensity={1} />
+      {/* 3D particles background */}      <ParticleBackground intensity={1} />
       
       {/* Navbar */}
       <Navbar />
@@ -32,7 +31,7 @@ export default function Home() {
       {/* Main content */}
       <main className="flex flex-col items-center justify-center flex-grow px-4 relative z-10">
         <div className="flex flex-col items-center max-w-4xl w-full">          <motion.div
-            className="text-center mb-6 sm:mb-8"
+            className="text-center mb-4 sm:mb-6 md:mb-8 px-2"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.6 }} // Faster appearance for header
@@ -59,12 +58,11 @@ export default function Home() {
             transition={{ duration: 0.5, delay: 1.0 }} // Reduced delay for faster appearance
           >
             <ThoughtInput />
-          </motion.div>
-        </div>
+          </motion.div>        </div>
       </main>
 
       {/* Divine floating button - bottom right */}
-      <div className="fixed bottom-8 right-8 z-30">
+      <div className="fixed bottom-4 sm:bottom-8 right-4 sm:right-8 z-30">
         <div className="group relative">
           {/* Tooltip */}
           <div className="absolute bottom-full mb-2 right-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300">

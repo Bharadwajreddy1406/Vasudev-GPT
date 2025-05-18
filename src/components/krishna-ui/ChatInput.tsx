@@ -71,15 +71,14 @@ export default function ChatInput({ onSend, className, isLoading = false }: Chat
         handleSubmit(e);
       }
     }
-  };
-  return (
+  };  return (
     <motion.div 
       className={`w-full ${className}`}
       initial={{ y: 10, opacity: 0 }} // Reduced distance for smoother entry
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.3 }} // Faster animation
     >
-      <form ref={formRef} onSubmit={handleSubmit} className="flex  gap-3  ">
+      <form ref={formRef} onSubmit={handleSubmit} className="flex gap-2 sm:gap-3">
         {/* Chat input area */}
         <div className="relative flex-grow">
           <textarea
@@ -108,8 +107,7 @@ export default function ChatInput({ onSend, className, isLoading = false }: Chat
               maxHeight: '150px'
             }}
           />
-          
-          {/* Character counter */}
+            {/* Character counter */}
           <div className="absolute right-3 bottom-1 text-xs text-[#E8F1FF]/70">
             {message.length > 0 && (
               <span>{message.length}/1000</span>
@@ -123,7 +121,7 @@ export default function ChatInput({ onSend, className, isLoading = false }: Chat
           type="submit"
           disabled={!message.trim() || isLoading}
           className={`
-            relative min-w-[56px] h-[56px] rounded-md
+            relative min-w-[48px] sm:min-w-[56px] h-[48px] sm:h-[56px] rounded-md
             bg-gradient-to-br from-[#63C6EB] to-[#285CA2] 
             text-[#F5F8FF] 
             hover:from-[#63C6EB] hover:to-[#3592BD] 

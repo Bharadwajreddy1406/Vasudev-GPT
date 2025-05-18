@@ -43,10 +43,9 @@ const formatMeditativeResponse = (content: string): JSX.Element => {
   );
 };
 
-export default function ChatMessage({ type, content, className, isLatest = false }: ChatMessageProps) {
-  return (
+export default function ChatMessage({ type, content, className, isLatest = false }: ChatMessageProps) {  return (
     <motion.div
-      className={`mb-4 max-w-[80%] ${type === 'user' ? 'ml-auto' : 'mr-auto'} ${className}`}
+      className={`mb-4 max-w-[90%] sm:max-w-[80%] ${type === 'user' ? 'ml-auto' : 'mr-auto'} ${className}`}
       initial={{ opacity: 0, y: 10 }} // Reduced distance for smoother appearance
       animate={{ opacity: 1, y: 0 }}
       transition={{ 

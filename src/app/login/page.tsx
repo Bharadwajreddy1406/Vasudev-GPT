@@ -110,12 +110,11 @@ export default function LoginPage() {
       <div className="w-full lg:w-1/2 flex items-center justify-center relative bg-gradient-to-b from-[#031C3E] to-[#092A5E] overflow-y-hidden">
         <StarryBackground />
         
-        {/* Form container with glassmorphic effect */}
-        <motion.div 
+        {/* Form container with glassmorphic effect */}        <motion.div 
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.8 }}
-          className="w-full max-w-md backdrop-blur-md bg-white/5 border border-white/10 rounded-2xl shadow-lg p-6"
+          className="w-full max-w-md backdrop-blur-md bg-white/5 border border-white/10 rounded-2xl shadow-lg p-4 sm:p-6 mx-4 sm:mx-auto"
         >
           <motion.h1 
             initial={{ opacity: 0, y: -20 }}
@@ -150,15 +149,14 @@ export default function LoginPage() {
                 className="text-sm font-medium text-gray-200"
               >
                 Email
-              </label>
-              <Input
+              </label>              <Input
                 id="email"
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="Enter your email"
                 required
-                className="w-full h-9 p-2 border rounded-lg bg-white/5 text-white border-white/10 focus:border-blue-400 transition-all focus:ring-2 focus:ring-blue-400/30 placeholder:text-gray-400"
+                className="w-full h-10 sm:h-9 p-2 border rounded-lg bg-white/5 text-white border-white/10 focus:border-blue-400 transition-all focus:ring-2 focus:ring-blue-400/30 placeholder:text-gray-400 text-base sm:text-sm"
               />
             </motion.div>
             
@@ -169,15 +167,14 @@ export default function LoginPage() {
                 className="text-sm font-medium text-gray-200"
               >
                 Password
-              </label>
-              <Input
+              </label>              <Input
                 id="password"
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Enter your password"
                 required
-                className="w-full h-9 p-2 border rounded-lg bg-white/5 text-white border-white/10 focus:border-blue-400 transition-all focus:ring-2 focus:ring-blue-400/30 placeholder:text-gray-400"
+                className="w-full h-10 sm:h-9 p-2 border rounded-lg bg-white/5 text-white border-white/10 focus:border-blue-400 transition-all focus:ring-2 focus:ring-blue-400/30 placeholder:text-gray-400 text-base sm:text-sm"
               />
             </motion.div>
             

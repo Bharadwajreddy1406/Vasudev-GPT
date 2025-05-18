@@ -1,9 +1,10 @@
 'use client';
 
-import React, { useRef, useMemo, useEffect } from 'react';
+import React, { useRef, useMemo, useEffect, useState } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { PointMaterial, Points } from '@react-three/drei';
 import * as THREE from 'three';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 // Particle field for divine atmosphere - optimized for performance
 function ParticleField({ count = 300, intensity = 1 }: { count?: number; intensity?: number }) {
@@ -135,11 +136,38 @@ interface ParticleBackgroundProps {
 }
 
 export default function ParticleBackground({ intensity = 1, className }: ParticleBackgroundProps) {
+  const isMobile = useIsMobile();
+  const [isLowPerfDevice, setIsLowPerfDevice] = useState(false);
+  
+  // Detect low performance devices
+  useEffect(() => {
+    // Check if device might be low performance
+    const checkPerformance = () => {
+      // Use navigator.hardwareConcurrency as a proxy for device capability
+      const lowConcurrency = navigator.hardwareConcurrency && navigator.hardwareConcurrency < 4;
+      // On mobile, consider screen size too - very small devices might struggle more
+      const isSmallScreen = window.innerWidth < 360 || window.innerHeight < 480;
+      
+      setIsLowPerfDevice(lowConcurrency || isSmallScreen);
+    };
+    
+    checkPerformance();
+    window.addEventListener('resize', checkPerformance);
+    return () => window.removeEventListener('resize', checkPerformance);
+  }, []);
+  
+  // Calculate appropriate particle count based on device
+  const particleCount = useMemo(() => {
+    if (isLowPerfDevice) return 80; // Very low for weak devices
+    if (isMobile) return 150; // Reduced for mobile
+    return 300; // Full count for desktop
+  }, [isMobile, isLowPerfDevice]);
+  
   return (
     <div className={`fixed inset-0 z-0 ${className}`}>
-      <Canvas camera={{ position: [0, 0, 3], fov: 60 }}>
+      <Canvas camera={{ position: [0, 0, 3], fov: isMobile ? 70 : 60 }}>
         <ambientLight intensity={0.5} />
-        <ParticleField count={300} intensity={intensity} />
+        <ParticleField count={particleCount} intensity={isMobile ? intensity * 0.8 : intensity} />
       </Canvas>
     </div>
   );

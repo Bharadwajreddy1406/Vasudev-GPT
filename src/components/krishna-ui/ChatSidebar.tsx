@@ -61,13 +61,12 @@ export default function ChatSidebar({ chats, activeChat, onChatSelect, onNewChat
   const [isUpdating, setIsUpdating] = useState(false);
   const editInputRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
-
   // Update isMobile state based on window width
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth < 768);
       
-      // Auto-collapse on mobile
+      // Auto-collapse on mobile, but only on first load or when transitioning to mobile
       if (window.innerWidth < 768) {
         setIsCollapsed(true);
       }
@@ -193,20 +192,19 @@ export default function ChatSidebar({ chats, activeChat, onChatSelect, onNewChat
   };
 
   return (
-    <>
-      {/* Toggle button for mobile */}
+    <>      {/* Toggle button for mobile */}
       {isMobile && (
         <motion.button
-          className="fixed left-2 top-16 z-30 rounded-full bg-maroon/80 border border-amber-500/40 p-2 shadow-lg"
+          className="fixed left-2 top-16 z-30 rounded-full bg-maroon/80 border border-amber-500/40 p-2 shadow-lg backdrop-blur-sm"
           onClick={() => setIsCollapsed(!isCollapsed)}
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.95 }}
+          aria-label={isCollapsed ? "Open sidebar" : "Close sidebar"}
         >
           {isCollapsed ? <ChevronRightIcon className="text-amber-400 h-4 w-4" /> : <ChevronLeftIcon className="text-amber-400 h-4 w-4" />}
         </motion.button>
-      )}
-        <motion.div
-        className={`bg-slate-900/60 mt-1 backdrop-blur-md border-r border-amber-500/20 h-full flex flex-col z-20 overflow-hidden`}
+      )}        <motion.div
+        className={`bg-slate-900/60 mt-1 backdrop-blur-md border-r border-amber-500/20 h-full flex flex-col z-20 overflow-hidden fixed md:relative`}
         initial={{ width: isMobile ? 0 : 280 }}
         animate={{ 
           width: isCollapsed ? (isMobile ? 0 : 60) : 280,

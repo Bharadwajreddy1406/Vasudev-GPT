@@ -48,10 +48,9 @@ export default function ThoughtInput({ className }: ThoughtInputProps) {
         setIsLoading(false);
       }
     }
-  };
-    return (
+  };    return (
     <motion.div 
-      className={`w-full mx-auto ${className}`}
+      className={`w-full max-w-lg mx-auto px-3 sm:px-0 ${className}`}
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay: 1.0 }} // Matches the timing in page.tsx
@@ -62,13 +61,12 @@ export default function ThoughtInput({ className }: ThoughtInputProps) {
           value={thought}
           onChange={(e) => setThought(e.target.value)}
           placeholder={user ? "Enter your thoughts today..." : "Login to share your thoughts..."}
-          className="flex-grow backdrop-blur-2xl px-4 py-3 rounded-xl border-2 border-blue-300 bg-opacity-40 text-slate-100 font-lora focus:outline-none focus:ring-2 focus:ring-blue-400"
-          autoFocus
-          disabled={isLoading || !user}
+          className="flex-grow backdrop-blur-2xl px-3 sm:px-4 py-3 rounded-xl border-2 border-blue-300 bg-opacity-40 text-slate-100 font-lora focus:outline-none focus:ring-2 focus:ring-blue-400 text-sm sm:text-base"
+          autoFocus          disabled={isLoading || !user}
         />
         <button
           type="submit"
-          className="px-7 py-4 rounded-full bg-blue-600 text-white hover:bg-blue-500 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-400"
+          className="px-5 sm:px-7 py-3 sm:py-4 rounded-full bg-blue-600 text-white hover:bg-blue-500 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-400 flex-shrink-0"
           disabled={!thought.trim() || isLoading || !user}
         >
           {isLoading ? (

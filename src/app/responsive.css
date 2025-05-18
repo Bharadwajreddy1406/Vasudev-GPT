@@ -1,0 +1,209 @@
+/* Mobile responsive adjustments */
+@media (max-width: 640px) {
+  .divine-text {
+    text-shadow: 0 0 3px rgba(232, 241, 255, 0.5);
+  }
+  
+  .divine-glow {
+    box-shadow: 0 0 10px 3px var(--color-amber);
+  }
+  
+  /* Improved tap targets for mobile */
+  button, a, input[type="submit"] {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  /* Prevent text from being too small */
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+  
+  /* Prevent horizontal overflow */
+  body {
+    overflow-x: hidden;
+    width: 100%;
+  }
+  
+  /* Improve touch scrolling */
+  * {
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  /* Prevent iOS input zoom */
+  input[type="text"],
+  input[type="email"],
+  input[type="password"],
+  input[type="number"],
+  input[type="search"],
+  input[type="tel"],
+  input[type="url"],
+  textarea {
+    font-size: 16px;
+  }
+  
+  /* Optimize animation performance */
+  .optimize-mobile {
+    will-change: transform;
+    transform: translateZ(0);
+    backface-visibility: hidden;
+  }
+  
+  /* Improve readability of text on mobile */
+  .mobile-text-enhance {
+    letter-spacing: 0.01em;
+    line-height: 1.5;
+  }
+  
+  /* Better spacing for mobile forms */
+  .form-field {
+    margin-bottom: 16px;
+  }
+  
+  /* Optimize chat message display */
+  .chat-message {
+    padding: 10px 12px;
+    margin-bottom: 8px;
+    border-radius: 12px;
+  }
+  
+  /* Improve touch targets for list items */
+  li {
+    padding-top: 4px;
+    padding-bottom: 4px;
+  }
+  
+  /* Optimize animations to reduce jank */
+  .mobile-animate {
+    transition-duration: 0.3s;
+    animation-duration: 0.3s;
+  }
+  
+  /* Fix sticky positioning on iOS */
+  .ios-sticky-fix {
+    position: -webkit-sticky;
+    position: sticky;
+  }
+  
+  /* Enhance dropdown menus for touch */
+  .dropdown-content {
+    min-width: 180px;
+    padding: 8px 0;
+  }
+  
+  /* Improve scrollbar for touch devices */
+  .scrollbar-touch {
+    scrollbar-width: thin;
+    -ms-overflow-style: none;
+  }
+  
+  /* Hide scrollbar but keep functionality */
+  .scrollbar-touch::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+  }
+  
+  /* Visual improvements for buttons on mobile */
+  .btn-mobile {
+    padding: 10px 16px;
+    font-weight: 500;
+  }
+}
+
+/* Tablet responsive adjustments */
+@media (min-width: 641px) and (max-width: 1024px) {
+  /* Intermediate sizes */
+  .divine-glow {
+    box-shadow: 0 0 15px 4px var(--color-amber);
+  }
+  
+  /* Improved scroll experience */
+  .custom-scrollbar {
+    scrollbar-width: thin;
+  }
+  
+  /* Adjusted layout for tablets */
+  .tablet-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  
+  /* Optimize UI elements for tablets */
+  .tablet-ui {
+    font-size: 0.95rem;
+    padding: 12px;
+  }
+  
+  /* Better spacing for tablet screens */
+  .tablet-spacing {
+    margin: 20px auto;
+    max-width: 92%;
+  }
+}
+
+/* Orientation-specific adjustments */
+@media (orientation: landscape) and (max-height: 500px) {
+  /* Handle landscape mode on small devices */
+  .landscape-optimize {
+    max-height: 85vh;
+    overflow-y: auto;
+  }
+  
+  /* Adjust heading sizes in landscape */
+  h1, h2, h3 {
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+  }
+  
+  /* Optimize spacing in landscape */
+  .stack-landscape {
+    gap: 8px;
+  }
+  
+  /* Make header more compact in landscape */
+  .header-landscape {
+    height: 48px;
+    padding: 0 8px;
+  }
+  
+  /* Adjust fixed elements in landscape */
+  .fixed-landscape {
+    position: absolute;
+  }
+}
+
+/* High DPI Screen Optimizations */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  /* Sharper borders for high DPI screens */
+  .sharp-border {
+    border-width: 0.5px;
+  }
+  
+  /* Enhanced text rendering for high DPI */
+  .crisp-text {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+/* Reduced Motion Preference */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Dark Mode Adjustments */
+@media (prefers-color-scheme: dark) {
+  .dark-mode-enhance {
+    box-shadow: 0 0 8px rgba(99, 198, 235, 0.2);
+  }
+  
+  .dark-mode-text {
+    color: rgba(245, 248, 255, 0.92);
+  }
+}
