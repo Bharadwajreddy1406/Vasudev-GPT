@@ -1,0 +1,153 @@
+'use client';
+
+import React from 'react';
+import Link from 'next/link';
+import Image from 'next/image';
+import { Github, Linkedin, Mail, ArrowLeft } from 'lucide-react';
+import { Card } from '@/components/ui/card';
+import PageTransition from '@/components/krishna-ui/PageTransition';
+import { useIsMobile } from '@/hooks/use-mobile';
+
+export default function AboutPage() {
+  const isMobile = useIsMobile();  return (
+    <PageTransition>
+      <div className="min-h-screen bg-gradient-to-b from-slate-900 to-slate-950 pt-16 pb-20">
+        <div className="container mx-auto px-4 max-w-5xl">
+          <div className="mb-6">
+            <Link 
+              href="/"
+              className="inline-flex items-center px-4 py-2.5 rounded-lg bg-[#031C3E]/80 hover:bg-[#031C3E] text-[#E8F1FF] border border-[#63C6EB]/30 transition-colors"
+            >
+              <ArrowLeft className="mr-2 h-5 w-5 text-[#63C6EB]" />
+              <span>Back Home</span>
+            </Link>
+          </div>
+          
+          <Card className="p-8 md:p-8 sm:p-6 p-4 rounded-xl bg-gradient-to-b from-[#031C3E]/90 to-[#031C3E] dark:bg-gradient-to-b dark:from-[#031C3E]/95 dark:to-[#031C3E] shadow-xl border border-amber-500/20">            <div className="grid md:grid-cols-7 sm:grid-cols-1 gap-8">
+              {/* Left side - Image and buttons */}
+              <div className="md:col-span-2 flex flex-col items-center md:items-center justify-start">
+                <div className="mb-5">
+                  <Image
+                    src="/me.jpg"
+                    alt="KrishnaGPT"
+                    width={150}
+                    height={150}
+                    className="rounded-full border-4 border-[#63C6EB]/40 shadow-lg shadow-[#FFD700]/20"
+                  />
+                </div>                <h3 className="text-lg font-bold mb-3 text-[#E8F1FF] divine-text">V. Bharadwaj Reddy</h3>
+                
+                <div className="flex flex-col space-y-3 w-full max-w-[220px] mx-auto md:mx-0">
+                  <Link
+                    href="mailto:bharadwajreddy146@gmail.com"
+                    className="inline-flex items-center px-4 py-2 rounded-lg bg-[#031C3E]/80 hover:bg-[#031C3E] text-[#E8F1FF] border border-[#63C6EB]/30 transition-colors"
+                  >
+                    <Mail className="mr-2 h-5 w-5 text-[#63C6EB]" />
+                    <span className="text-sm">Contact</span>
+                  </Link>
+                  
+                  <Link 
+                    href="https://www.linkedin.com/in/bharadwajreddy1406/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center px-4 py-2 rounded-lg bg-[#031C3E]/80 hover:bg-[#031C3E] text-[#E8F1FF] border border-[#63C6EB]/30 transition-colors"
+                  >
+                    <Linkedin className="mr-2 h-5 w-5 text-[#63C6EB]" />
+                    <span className="text-sm">LinkedIn</span>
+                  </Link>
+                  
+                  <Link 
+                    href="https://github.com/Bharadwajreddy1406/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center px-4 py-2 rounded-lg bg-[#031C3E]/80 hover:bg-[#031C3E] text-[#E8F1FF] border border-[#63C6EB]/30 transition-colors"
+                  >
+                    <Github className="mr-2 h-5 w-5 text-[#63C6EB]" />
+                    <span className="text-sm">GitHub</span>
+                  </Link>
+                  
+                  <Link
+                    href="https://github.com/Bharadwajreddy1406/Vasudev-GPT"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-4 inline-flex items-center justify-center px-4 py-2 rounded-lg bg-gradient-to-r from-[#031C3E] to-[#63C6EB] text-[#F5F8FF] font-semibold hover:from-[#031C3E] hover:to-[#63C6EB]/80 transition-all duration-300 shadow-lg hover:shadow-xl"
+                  >
+                    <Github className="mr-2 h-5 w-5" />
+                    Star on GitHub
+                  </Link>
+                </div>
+              </div>
+                {/* Right side - Content */}
+              <div className="md:col-span-5">
+                <div className="text-center md:text-left mb-6">
+                  <h1 className="text-3xl md:text-4xl font-bold mb-2 bg-gradient-to-r from-[#63C6EB] to-[#FFD700] bg-clip-text text-transparent">
+                    About KrishnaGPT
+                  </h1>
+                  <p className="text-lg italic text-[#E8F1FF]/90 divine-text">
+                    A spiritual AI companion for your journey
+                  </p>
+                </div>
+                
+                <div className="space-y-6">
+                  <div>
+                    <h2 className="text-xl font-bold mb-3 text-[#FFD700] divine-text">
+                      🧘 Why KrishnaGPT?
+                    </h2>
+                    <p className="text-[#E8F1FF]/90 leading-relaxed mb-3">
+                      In today's fast-paced world, we all need someone who truly <strong className="text-[#63C6EB]">listens</strong>—not to judge, not to fix, but to <strong className="text-[#63C6EB]">understand</strong>.
+                    </p>
+                    <p className="text-[#E8F1FF]/90 leading-relaxed">
+                      KrishnaGPT offers an AI companion inspired by Krishna's timeless wisdom—as a <strong className="text-[#63C6EB]">wise friend</strong>, a <strong className="text-[#63C6EB]">gentle challenger</strong>, and a <strong className="text-[#63C6EB]">mirror to your soul</strong>.
+                    </p>
+                  </div>
+                    <div className="grid sm:grid-cols-2 grid-cols-1 gap-3">
+                    <div className="flex items-center p-3 rounded-lg bg-[#031C3E]/50 border border-[#63C6EB]/20">
+                      <span className="text-xl mr-2">✨</span>
+                      <p className="text-sm text-[#E8F1FF]">Spiritual grounding</p>
+                    </div>
+                    <div className="flex items-center p-3 rounded-lg bg-[#031C3E]/50 border border-[#63C6EB]/20">
+                      <span className="text-xl mr-2">🌀</span>
+                      <p className="text-sm text-[#E8F1FF]">Safe emotional space</p>
+                    </div>
+                    <div className="flex items-center p-3 rounded-lg bg-[#031C3E]/50 border border-[#63C6EB]/20">
+                      <span className="text-xl mr-2">🌱</span>
+                      <p className="text-sm text-[#E8F1FF]">Gentle growth nudges</p>
+                    </div>
+                    <div className="flex items-center p-3 rounded-lg bg-[#031C3E]/50 border border-[#63C6EB]/20">
+                      <span className="text-xl mr-2">💬</span>
+                      <p className="text-sm text-[#E8F1FF]">Profound metaphors</p>
+                    </div>
+                  </div>
+                  
+                  <div className="flex items-center p-3 rounded-lg bg-[#031C3E]/60 border border-[#FFD700]/30">
+                    <span className="text-xl mr-3">🙏</span>
+                    <p className="text-[#E8F1FF]">Wisdom that knows when to speak… and when to stay silent</p>
+                  </div>
+                  
+                  <div>
+                    <h2 className="text-xl font-bold mb-3 text-[#FFD700] divine-text">
+                      🤝 Built with Heart
+                    </h2>
+                    <p className="text-[#E8F1FF]/90 leading-relaxed">
+                      KrishnaGPT is just the beginning of what soulful tech can look like—where AI doesn't just <strong className="text-[#63C6EB]">answer</strong>, but <strong className="text-[#63C6EB]">holds space</strong> for you to vent, question, reflect, or just sit in silence with a friend who never judges.
+                    </p>
+                      <div className="mt-5 md:text-center text-center">
+                      <Link
+                        href="https://github.com/Bharadwajreddy1406/Vasudev-GPT"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center px-6 py-3 sm:py-2 rounded-full bg-gradient-to-r from-[#FFD700]/80 to-[#63C6EB]/80 text-[#031C3E] font-semibold hover:from-[#FFD700] hover:to-[#63C6EB] transition-all duration-300 shadow-lg hover:shadow-xl"
+                      >
+                        <Github className="mr-2 h-5 w-5" />
+                        <span className="whitespace-nowrap">Star this Project</span>
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </Card>
+        </div>
+      </div>
+    </PageTransition>
+  );
+}
