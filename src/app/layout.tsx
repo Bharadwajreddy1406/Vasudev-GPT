@@ -28,6 +28,11 @@ export const metadata: Metadata = {
     minimumScale: 1,
     userScalable: true,
   },
+  icons: {
+    icon: '/next.png',
+    shortcut: '/next.png',
+    apple: '/next.png',
+  },
   themeColor: "#031C3E",
   appleWebApp: {
     capable: true,
@@ -79,6 +84,8 @@ export default function RootLayout({
     <html lang="en" className="bg-slate-900">
       <head>
         <link rel="icon" href="/next.png" />
+        <link rel="shortcut icon" href="/next.png" type="image/png" />
+        <link rel="apple-touch-icon" href="/next.png" />
         <meta name="theme-color" content="#031C3E" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
